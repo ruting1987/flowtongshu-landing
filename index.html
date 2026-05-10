@@ -82,6 +82,8 @@
   .pm-screen{border-radius:38px;overflow:hidden;background:#fff;}
   .pm-screen img{width:100%;display:block;}
   .frame-glow{position:relative;}
+  .feat-img{aspect-ratio:3/2;overflow:hidden;}
+  .feat-img img{width:100%;height:100%;object-fit:cover;display:block;}
   .frame-glow::before{
     content:"";position:absolute;inset:-25%;z-index:-1;
     background:radial-gradient(60% 60% at 50% 50%,rgba(58,123,255,.18),transparent 70%);
@@ -452,8 +454,8 @@
         <a href="https://app.flowtongshu.com/register" class="mt-8 inline-flex items-center gap-2 ulink text-[14px] font-medium">Read today's flow <span aria-hidden="true">→</span></a>
       </div>
       <div class="lg:col-span-7 order-1 lg:order-2">
-        <div class="frame frame-glow mx-auto max-w-[340px]">
-          <img src="assets/img/phone-daily.png" alt="Daily View — mobile" class="w-full"/>
+        <div class="frame frame-glow feat-img">
+          <img src="assets/img/phone-daily.png" alt="Daily View — mobile" style="object-position:top;"/>
         </div>
       </div>
     </div>
@@ -461,8 +463,8 @@
     <!-- ROW 2 — Monthly View -->
     <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center mb-24 lg:mb-36">
       <div class="lg:col-span-7">
-        <div class="frame frame-glow">
-          <img src="assets/img/monthly.png" alt="Monthly View — auspicious dates calendar" class="w-full"/>
+        <div class="frame frame-glow feat-img">
+          <img src="assets/img/monthly.png" alt="Monthly View — auspicious dates calendar"/>
         </div>
       </div>
       <div class="lg:col-span-5">
@@ -490,8 +492,8 @@
         </ul>
       </div>
       <div class="lg:col-span-7 order-1 lg:order-2">
-        <div class="frame frame-glow mx-auto max-w-[600px]">
-          <img src="assets/img/natal.png" alt="Bazi Natal Chart — four pillars" class="w-full"/>
+        <div class="frame frame-glow feat-img">
+          <img src="assets/img/natal.png" alt="Bazi Natal Chart — four pillars"/>
         </div>
       </div>
     </div>
@@ -499,8 +501,8 @@
     <!-- ROW 4 — Date Selector -->
     <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center mb-24 lg:mb-36">
       <div class="lg:col-span-7">
-        <div class="frame frame-glow">
-          <img src="assets/img/date-selection.png" alt="Date Selector — ranked auspicious dates" class="w-full"/>
+        <div class="frame frame-glow feat-img">
+          <img src="assets/img/date-selection.png" alt="Date Selector — ranked auspicious dates"/>
         </div>
       </div>
       <div class="lg:col-span-5">
