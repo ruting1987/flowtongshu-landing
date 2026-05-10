@@ -70,17 +70,20 @@
     box-shadow:0 30px 80px -30px rgba(0,0,0,.6),0 0 0 1px rgba(123,168,255,.05);
     overflow:hidden;
   }
-  /* Stacked phones duo */
-  .phones-duo{position:relative;padding-bottom:22%;}
-  .phone-back{width:57%;position:relative;z-index:1;margin-top:13%;
-    filter:drop-shadow(0 20px 50px rgba(0,0,0,.5));}
-  .phone-front{position:absolute;right:0;top:0;width:57%;z-index:2;
-    filter:drop-shadow(0 28px 70px rgba(0,0,0,.65));}
-  .pm{background:#1c1c1e;border-radius:48px;padding:10px 6px 8px;
-    box-shadow:0 0 0 1px rgba(255,255,255,.08);}
-  .pm-island{width:86px;height:26px;background:#000;border-radius:20px;margin:0 auto 8px;}
-  .pm-screen{border-radius:38px;overflow:hidden;background:#fff;}
-  .pm-screen img{width:100%;display:block;}
+  /* Two-phone stage — Schedule & Sync */
+  .tp-stage{position:relative;width:min(960px,100%);aspect-ratio:960/1050;display:flex;align-items:center;justify-content:center;margin:0 auto;}
+  .tp-phone{position:absolute;width:300px;height:610px;background:#0d0d0f;border-radius:52px;padding:11px;box-shadow:inset 0 0 0 2px #1a1a1c,inset 0 0 0 3px #2c2c2e,0 30px 60px -20px rgba(0,0,0,.7),0 60px 100px -30px rgba(0,0,0,.5);}
+  .tp-phone::before{content:"";position:absolute;inset:-1px;border-radius:53px;background:linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,0) 30%,rgba(255,255,255,0) 70%,rgba(255,255,255,.06));pointer-events:none;}
+  .tp-screen{position:relative;width:100%;height:100%;border-radius:42px;background:#f4f5f7;overflow:hidden;}
+  .tp-screen img{display:block;width:100%;height:100%;object-fit:cover;object-position:top center;}
+  .tp-notch{position:absolute;top:10px;left:50%;transform:translateX(-50%);width:96px;height:28px;background:#000;border-radius:18px;z-index:30;}
+  .tp-status{position:absolute;top:0;left:0;right:0;height:48px;display:flex;align-items:center;justify-content:space-between;padding:16px 26px 0;z-index:25;color:#14141a;font-size:14px;font-weight:600;letter-spacing:-0.01em;}
+  .tp-status .icons{display:flex;gap:5px;align-items:center;}
+  .tp-home{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:120px;height:4px;border-radius:2px;background:#14141a;opacity:.85;z-index:25;}
+  #tp-phone1{transform:rotate(-7deg) translate(-150px,-10px);z-index:1;}
+  #tp-phone2{transform:rotate(6deg) translate(160px,70px);z-index:2;}
+  @media(max-width:760px){.tp-stage{transform:scale(0.78);}}
+  @media(max-width:560px){.tp-stage{transform:scale(0.58);}}
   .frame-glow{position:relative;}
   .feat-img{aspect-ratio:3/2;overflow:hidden;}
   .feat-img img{width:100%;height:100%;object-fit:cover;display:block;}
@@ -532,19 +535,40 @@
         <a href="https://app.flowtongshu.com/register" class="mt-8 inline-flex items-center gap-2 ulink text-[14px] font-medium">Start syncing <span aria-hidden="true">→</span></a>
       </div>
       <div class="lg:col-span-7 order-1 lg:order-2">
-        <div class="phones-duo">
-          <div class="phone-back">
-            <div class="pm">
-              <div class="pm-island"></div>
-              <div class="pm-screen"><img src="assets/img/new schedule.png" alt="Add new schedule"/></div>
+        <div class="tp-stage">
+
+          <div class="tp-phone" id="tp-phone1">
+            <div class="tp-screen">
+              <div class="tp-notch"></div>
+              <div class="tp-status">
+                <span>9:41</span>
+                <span class="icons">
+                  <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.6"/><rect x="4.5" y="5" width="3" height="6" rx="0.6"/><rect x="9" y="3" width="3" height="8" rx="0.6"/><rect x="13.5" y="0" width="3" height="11" rx="0.6"/></svg>
+                  <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M7.5 0C4.6 0 1.9 1 0 2.7l1.5 1.5C3 2.8 5.2 2 7.5 2s4.5 0.8 6 2.2L15 2.7C13.1 1 10.4 0 7.5 0Zm0 4C5.6 4 3.9 4.7 2.6 5.8l1.5 1.5c0.9-0.8 2.1-1.3 3.4-1.3s2.5 0.5 3.4 1.3l1.5-1.5C11.1 4.7 9.4 4 7.5 4Zm0 4c-1 0-1.8 0.4-2.5 1l2.5 2 2.5-2c-0.7-0.6-1.5-1-2.5-1Z"/></svg>
+                  <svg width="25" height="11" viewBox="0 0 25 11" fill="none"><rect x="0.5" y="0.5" width="21" height="10" rx="2.5" stroke="currentColor" stroke-opacity="0.4"/><rect x="2" y="2" width="18" height="7" rx="1.2" fill="currentColor"/><rect x="22.5" y="3.5" width="1.6" height="4" rx="0.6" fill="currentColor" fill-opacity="0.5"/></svg>
+                </span>
+              </div>
+              <img src="assets/img/new savedate.png" alt="Save this date"/>
+              <div class="tp-home"></div>
             </div>
           </div>
-          <div class="phone-front">
-            <div class="pm">
-              <div class="pm-island"></div>
-              <div class="pm-screen"><img src="assets/img/new savedate.png" alt="Save this date"/></div>
+
+          <div class="tp-phone" id="tp-phone2">
+            <div class="tp-screen">
+              <div class="tp-notch"></div>
+              <div class="tp-status">
+                <span>9:41</span>
+                <span class="icons">
+                  <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.6"/><rect x="4.5" y="5" width="3" height="6" rx="0.6"/><rect x="9" y="3" width="3" height="8" rx="0.6"/><rect x="13.5" y="0" width="3" height="11" rx="0.6"/></svg>
+                  <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M7.5 0C4.6 0 1.9 1 0 2.7l1.5 1.5C3 2.8 5.2 2 7.5 2s4.5 0.8 6 2.2L15 2.7C13.1 1 10.4 0 7.5 0Zm0 4C5.6 4 3.9 4.7 2.6 5.8l1.5 1.5c0.9-0.8 2.1-1.3 3.4-1.3s2.5 0.5 3.4 1.3l1.5-1.5C11.1 4.7 9.4 4 7.5 4Zm0 4c-1 0-1.8 0.4-2.5 1l2.5 2 2.5-2c-0.7-0.6-1.5-1-2.5-1Z"/></svg>
+                  <svg width="25" height="11" viewBox="0 0 25 11" fill="none"><rect x="0.5" y="0.5" width="21" height="10" rx="2.5" stroke="currentColor" stroke-opacity="0.4"/><rect x="2" y="2" width="18" height="7" rx="1.2" fill="currentColor"/><rect x="22.5" y="3.5" width="1.6" height="4" rx="0.6" fill="currentColor" fill-opacity="0.5"/></svg>
+                </span>
+              </div>
+              <img src="assets/img/new schedule.png" alt="Add new schedule"/>
+              <div class="tp-home"></div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
