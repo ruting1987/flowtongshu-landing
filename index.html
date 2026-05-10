@@ -314,12 +314,7 @@
 <!-- Wave: Hero → Testimonials -->
 <div class="wave-divider" style="background:#0B0D12;">
   <svg viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
-    <path fill="#0E1116">
-      <animate attributeName="d" dur="11s" repeatCount="indefinite"
-        values="M0,40 C360,80 720,10 1080,40 C1260,55 1350,30 1440,45 L1440,80 L0,80 Z;
-                M0,45 C360,15 720,75 1080,40 C1260,20 1350,55 1440,35 L1440,80 L0,80 Z;
-                M0,40 C360,80 720,10 1080,40 C1260,55 1350,30 1440,45 L1440,80 L0,80 Z"/>
-    </path>
+    <path id="wave-path-0" fill="#0E1116" d="M0,40 C360,80 720,10 1080,40 C1260,55 1350,30 1440,45 L1440,80 L0,80 Z"/>
   </svg>
 </div>
 
@@ -417,12 +412,7 @@
 <!-- Wave: Testimonials → Features -->
 <div class="wave-divider" style="background:#0E1116;">
   <svg viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
-    <path fill="#13161D">
-      <animate attributeName="d" dur="13s" repeatCount="indefinite"
-        values="M0,45 C300,15 720,70 1080,40 C1260,25 1350,55 1440,40 L1440,80 L0,80 Z;
-                M0,35 C300,75 720,10 1080,45 C1260,65 1350,25 1440,50 L1440,80 L0,80 Z;
-                M0,45 C300,15 720,70 1080,40 C1260,25 1350,55 1440,40 L1440,80 L0,80 Z"/>
-    </path>
+    <path id="wave-path-1" fill="#13161D" d="M0,45 C300,15 720,70 1080,40 C1260,25 1350,55 1440,40 L1440,80 L0,80 Z"/>
   </svg>
 </div>
 
@@ -546,12 +536,7 @@
 <!-- Wave: Features → How -->
 <div class="wave-divider" style="background:#13161D;">
   <svg viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
-    <path fill="#0B0D12">
-      <animate attributeName="d" dur="12s" repeatCount="indefinite"
-        values="M0,40 C360,80 720,10 1080,40 C1260,55 1350,30 1440,45 L1440,80 L0,80 Z;
-                M0,50 C360,20 720,70 1080,35 C1260,15 1350,55 1440,30 L1440,80 L0,80 Z;
-                M0,40 C360,80 720,10 1080,40 C1260,55 1350,30 1440,45 L1440,80 L0,80 Z"/>
-    </path>
+    <path id="wave-path-2" fill="#0B0D12" d="M0,40 C360,80 720,10 1080,40 C1260,55 1350,30 1440,45 L1440,80 L0,80 Z"/>
   </svg>
 </div>
 
@@ -617,12 +602,7 @@
 <!-- Wave: How → Pricing -->
 <div class="wave-divider" style="background:#0B0D12;">
   <svg viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
-    <path fill="#13161D">
-      <animate attributeName="d" dur="10s" repeatCount="indefinite"
-        values="M0,45 C300,15 720,70 1080,40 C1260,25 1350,55 1440,40 L1440,80 L0,80 Z;
-                M0,30 C300,70 720,10 1080,50 C1260,70 1350,30 1440,55 L1440,80 L0,80 Z;
-                M0,45 C300,15 720,70 1080,40 C1260,25 1350,55 1440,40 L1440,80 L0,80 Z"/>
-    </path>
+    <path id="wave-path-3" fill="#13161D" d="M0,45 C300,15 720,70 1080,40 C1260,25 1350,55 1440,40 L1440,80 L0,80 Z"/>
   </svg>
 </div>
 
@@ -784,12 +764,7 @@
 <!-- Wave: Pricing → FAQ -->
 <div class="wave-divider" style="background:#13161D;">
   <svg viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
-    <path fill="#0B0D12">
-      <animate attributeName="d" dur="14s" repeatCount="indefinite"
-        values="M0,40 C360,75 720,15 1080,45 C1260,60 1350,30 1440,40 L1440,80 L0,80 Z;
-                M0,50 C360,20 720,70 1080,35 C1260,15 1350,55 1440,45 L1440,80 L0,80 Z;
-                M0,40 C360,75 720,15 1080,45 C1260,60 1350,30 1440,40 L1440,80 L0,80 Z"/>
-    </path>
+    <path id="wave-path-4" fill="#0B0D12" d="M0,40 C360,75 720,15 1080,45 C1260,60 1350,30 1440,40 L1440,80 L0,80 Z"/>
   </svg>
 </div>
 
@@ -939,5 +914,46 @@
   })();
 </script>
 <script src="assets/compass.js"></script>
+<script>
+(function(){
+  var waves = [
+    { id:'wave-path-0', dur:11000,
+      from:'M0,40 C360,80 720,10 1080,40 C1260,55 1350,30 1440,45 L1440,80 L0,80 Z',
+      to:  'M0,45 C360,15 720,75 1080,40 C1260,20 1350,55 1440,35 L1440,80 L0,80 Z' },
+    { id:'wave-path-1', dur:13000,
+      from:'M0,45 C300,15 720,70 1080,40 C1260,25 1350,55 1440,40 L1440,80 L0,80 Z',
+      to:  'M0,35 C300,75 720,10 1080,45 C1260,65 1350,25 1440,50 L1440,80 L0,80 Z' },
+    { id:'wave-path-2', dur:12000,
+      from:'M0,40 C360,80 720,10 1080,40 C1260,55 1350,30 1440,45 L1440,80 L0,80 Z',
+      to:  'M0,50 C360,20 720,70 1080,35 C1260,15 1350,55 1440,30 L1440,80 L0,80 Z' },
+    { id:'wave-path-3', dur:10000,
+      from:'M0,45 C300,15 720,70 1080,40 C1260,25 1350,55 1440,40 L1440,80 L0,80 Z',
+      to:  'M0,30 C300,70 720,10 1080,50 C1260,70 1350,30 1440,55 L1440,80 L0,80 Z' },
+    { id:'wave-path-4', dur:14000,
+      from:'M0,40 C360,75 720,15 1080,45 C1260,60 1350,30 1440,40 L1440,80 L0,80 Z',
+      to:  'M0,50 C360,20 720,70 1080,35 C1260,15 1350,55 1440,45 L1440,80 L0,80 Z' }
+  ];
+
+  function nums(d){ return d.match(/-?\d+\.?\d*/g).map(Number); }
+  function rebuild(tmpl, vals){
+    var i=0;
+    return tmpl.replace(/-?\d+\.?\d*/g, function(){ return Math.round(vals[i++]*10)/10; });
+  }
+  function lerp(a,b,t){ return a.map(function(v,i){ return v+(b[i]-v)*t; }); }
+
+  waves.forEach(function(w){
+    var el = document.getElementById(w.id);
+    if(!el) return;
+    var a = nums(w.from), b = nums(w.to);
+    var offset = Math.random()*Math.PI*2;
+    function tick(ts){
+      var t = (Math.sin(ts/w.dur*Math.PI*2+offset)+1)/2;
+      el.setAttribute('d', rebuild(w.from, lerp(a,b,t)));
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+})();
+</script>
 </body>
 </html>
