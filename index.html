@@ -1,0 +1,943 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Flow Tong Shu — Pick the right day, every time</title>
+<meta name="description" content="The 2,500-year-old Chinese almanac, in your pocket. Find auspicious dates for weddings, launches, contracts, and every decision that matters."/>
+<link rel="icon" type="image/png" href="logo_white.png"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0D12;
+    --panel:#13161D;
+    --panel-2:#0F121A;
+    --ink:#F2F4F8;
+    --ink-dim:#A6AFC2;
+    --ink-mute:#6F7689;
+    --line:rgba(255,255,255,0.07);
+    --line-strong:rgba(255,255,255,0.14);
+    --blue:#7BA8FF;
+    --blue-2:#3A7BFF;
+    --gold:#F5C56B;
+    --green:#22C55E;
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  html,body{
+    background:var(--bg);color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    margin:0;padding:0;
+    font-feature-settings:"cv02","cv03","cv04","cv11";
+  }
+  body{-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  img{max-width:100%;height:auto;display:block;}
+  html{scroll-behavior:smooth;}
+  ::selection{background:rgba(123,168,255,.35);color:#fff;}
+
+  /* Typography */
+  .font-display{font-family:'Manrope',-apple-system,sans-serif;letter-spacing:-0.02em;font-weight:700;}
+  .font-cn{font-family:'Noto Serif SC',serif;}
+
+  .text-blue{color:var(--blue);}
+  .ink-dim{color:var(--ink-dim);}
+  .ink-mute{color:var(--ink-mute);}
+  .bg-panel{background:var(--panel);}
+  .bg-deep{background:var(--bg);}
+
+  /* Buttons */
+  .pill{border-radius:999px;}
+  .btn-primary{
+    background:linear-gradient(180deg,#8AB6FF 0%,#3A7BFF 100%);
+    color:#0B0D12;font-weight:600;
+    box-shadow:0 12px 32px -10px rgba(58,123,255,.55),inset 0 1px 0 rgba(255,255,255,.4);
+    transition:transform .2s ease,box-shadow .2s ease,filter .2s ease;
+  }
+  .btn-primary:hover{transform:translateY(-1px);filter:brightness(1.05);box-shadow:0 18px 40px -12px rgba(58,123,255,.7),inset 0 1px 0 rgba(255,255,255,.45);}
+  .btn-ghost{
+    background:rgba(255,255,255,0.03);color:var(--ink);
+    border:1px solid var(--line-strong);
+    transition:background .2s ease,border-color .2s ease;
+  }
+  .btn-ghost:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.22);}
+
+  /* Frame */
+  .frame{
+    border-radius:18px;border:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(26,29,36,.7),rgba(11,13,18,.7));
+    box-shadow:0 30px 80px -30px rgba(0,0,0,.6),0 0 0 1px rgba(123,168,255,.05);
+    overflow:hidden;
+  }
+  .frame-glow{position:relative;}
+  .frame-glow::before{
+    content:"";position:absolute;inset:-25%;z-index:-1;
+    background:radial-gradient(60% 60% at 50% 50%,rgba(58,123,255,.18),transparent 70%);
+    filter:blur(40px);
+  }
+
+  /* Backgrounds */
+  .stars{
+    position:absolute;inset:0;pointer-events:none;overflow:hidden;
+    background:
+      radial-gradient(1px 1px at 12% 22%,rgba(255,255,255,.5) 50%,transparent 51%),
+      radial-gradient(1px 1px at 36% 8%,rgba(255,255,255,.35) 50%,transparent 51%),
+      radial-gradient(1.2px 1.2px at 78% 18%,rgba(255,255,255,.55) 50%,transparent 51%),
+      radial-gradient(1px 1px at 64% 42%,rgba(255,255,255,.3) 50%,transparent 51%),
+      radial-gradient(1px 1px at 88% 64%,rgba(255,255,255,.45) 50%,transparent 51%),
+      radial-gradient(1px 1px at 22% 72%,rgba(255,255,255,.32) 50%,transparent 51%),
+      radial-gradient(1.4px 1.4px at 48% 86%,rgba(255,255,255,.45) 50%,transparent 51%),
+      radial-gradient(1px 1px at 6% 54%,rgba(255,255,255,.28) 50%,transparent 51%);
+  }
+  .blob{position:absolute;filter:blur(80px);opacity:.55;pointer-events:none;}
+  .glint{position:absolute;inset:0;pointer-events:none;background:radial-gradient(50% 30% at 50% 0%,rgba(123,168,255,.18),transparent 70%);}
+
+  /* Section dividers — animated waves, no stroke line */
+  .wave-divider{display:block;width:100%;line-height:0;font-size:0;}
+  .wave-divider svg{display:block;width:100%;height:60px;}
+  @media(min-width:768px){.wave-divider svg{height:80px;}}
+
+  /* Luopan compass — procedural SVG */
+  @keyframes spin-cw  { to { transform: rotate(360deg);  } }
+  @keyframes spin-ccw { to { transform: rotate(-360deg); } }
+  @keyframes wobble   {
+    0%,100%{ transform: rotate(-4deg); }
+    25%    { transform: rotate(3deg);  }
+    50%    { transform: rotate(-2deg); }
+    75%    { transform: rotate(4deg);  }
+  }
+  .luopan-wrap{
+    position:absolute;left:50%;top:50%;
+    transform:translate(-50%,-50%);
+    pointer-events:none;
+  }
+  #luopan{ width:100%;height:100%;display:block;overflow:visible; }
+  .ring  { transform-origin:500px 500px; transform-box:view-box; }
+  .ring-cw  { animation: spin-cw  calc(var(--period,300s) / 1) linear infinite; }
+  .ring-ccw { animation: spin-ccw calc(var(--period,300s) / 1) linear infinite; }
+  .needle   { transform-origin:500px 500px; transform-box:view-box;
+              animation: wobble 14s ease-in-out infinite; }
+
+  /* Plan cards */
+  .plan{
+    border-radius:20px;border:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(26,29,36,.7),rgba(15,17,23,.7));
+    transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;
+  }
+  .plan:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.18);box-shadow:0 30px 80px -30px rgba(0,0,0,.6);}
+  .plan-pop{border:1px solid rgba(123,168,255,.5);box-shadow:0 30px 80px -30px rgba(58,123,255,.4),0 0 0 1px rgba(123,168,255,.18) inset;}
+
+  /* Toggle */
+  .toggle{width:52px;height:28px;border-radius:999px;background:rgba(255,255,255,.08);position:relative;cursor:pointer;border:1px solid var(--line-strong);transition:background .2s;}
+  .toggle .knob{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:999px;background:#fff;transition:transform .25s ease;}
+  .toggle.on{background:linear-gradient(180deg,#8AB6FF,#3A7BFF);border-color:transparent;}
+  .toggle.on .knob{transform:translateX(24px);}
+
+  /* Nav */
+  .navwrap{background:rgba(11,13,18,.6);backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);border-bottom:1px solid var(--line);}
+  .nav-link{color:var(--ink-dim);transition:color .15s;font-weight:500;}
+  .nav-link:hover{color:var(--ink);}
+  #mobile-menu{display:none;}
+  #mobile-menu.open{display:block;}
+
+  /* Headlines */
+  .gradient-text{background:linear-gradient(180deg,#FFFFFF 0%,#E7ECF5 40%,#9DC1FF 110%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .h-display{font-size:clamp(40px,7vw,84px);line-height:1.02;letter-spacing:-0.035em;font-weight:800;}
+  .h-section{font-size:clamp(30px,4.4vw,52px);line-height:1.05;letter-spacing:-0.03em;font-weight:700;}
+  .h-feature{font-size:clamp(24px,3.2vw,40px);line-height:1.1;letter-spacing:-0.025em;font-weight:700;}
+
+  /* Footer */
+  .ftr-line{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);}
+
+  /* Eyebrow badge */
+  .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 13px;border-radius:999px;background:rgba(123,168,255,.08);border:1px solid rgba(123,168,255,.25);color:#cfe0ff;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;}
+  .badge .dot{width:6px;height:6px;border-radius:999px;background:var(--blue);}
+
+  /* Trial badge */
+  .trial-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.32);color:#7ce29c;font-size:12.5px;font-weight:600;letter-spacing:.02em;}
+
+  /* Drift */
+  @keyframes drift{0%{transform:translateY(0);}50%{transform:translateY(-10px);}100%{transform:translateY(0);}}
+  .drift{animation:drift 9s ease-in-out infinite;}
+
+  .phone-glow{position:relative;}
+  .phone-glow::after{
+    content:"";position:absolute;inset:-15% -15%;z-index:-1;
+    background:radial-gradient(55% 55% at 50% 40%,rgba(58,123,255,.22),transparent 70%);
+    filter:blur(40px);
+  }
+
+  /* Steps */
+  .step-card{
+    position:relative;text-align:left;padding:30px 26px;
+    background:linear-gradient(180deg,rgba(26,29,36,.65),rgba(15,17,23,.55));
+    border:1px solid var(--line);border-radius:20px;
+    transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;
+    overflow:hidden;
+  }
+  .step-card::before{
+    content:"";position:absolute;top:-30%;left:-30%;width:160%;height:80%;
+    background:radial-gradient(50% 50% at 50% 50%,rgba(123,168,255,.10),transparent 70%);
+    filter:blur(40px);opacity:0;transition:opacity .3s;pointer-events:none;
+  }
+  .step-card:hover{transform:translateY(-4px);border-color:rgba(123,168,255,.3);box-shadow:0 30px 70px -30px rgba(58,123,255,.25);}
+  .step-card:hover::before{opacity:1;}
+  .step-icon{
+    width:50px;height:50px;border-radius:14px;
+    background:radial-gradient(circle at 35% 30%,rgba(123,168,255,.32),rgba(58,123,255,.05) 70%);
+    border:1px solid rgba(123,168,255,.35);
+    display:flex;align-items:center;justify-content:center;color:#9DC1FF;
+    margin-bottom:20px;
+  }
+  .step-tag{font-size:11px;letter-spacing:.22em;color:#8AB6FF;text-transform:uppercase;font-weight:700;margin-bottom:8px;}
+
+  /* FAQ */
+  .faq-item{border:1px solid var(--line);border-radius:14px;background:rgba(26,29,36,.4);overflow:hidden;transition:border-color .2s;}
+  .faq-item:hover{border-color:rgba(255,255,255,.16);}
+  .faq-item summary{padding:18px 22px;cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:15px;font-weight:600;color:var(--ink);}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{content:"";width:9px;height:9px;border-right:1.6px solid var(--ink-dim);border-bottom:1.6px solid var(--ink-dim);transform:rotate(45deg);transition:transform .25s;flex-shrink:0;}
+  .faq-item[open] summary::after{transform:rotate(-135deg);}
+  .faq-item .faq-body{padding:0 22px 20px;color:var(--ink-dim);font-size:14px;line-height:1.65;}
+
+  /* Testimonial marquee */
+  .marquee{display:flex;gap:18px;width:max-content;animation:marquee 50s linear infinite;}
+  .marquee-track{position:relative;overflow:hidden;mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%);}
+  .marquee:hover{animation-play-state:paused;}
+  @keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+  .testimonial{
+    flex:0 0 auto;width:340px;padding:24px 24px 22px;
+    border-radius:18px;border:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(26,29,36,.75),rgba(15,17,23,.65));
+  }
+  .stars-row{color:var(--gold);font-size:13px;letter-spacing:2px;margin-bottom:10px;}
+
+  /* Underline link */
+  .ulink{position:relative;}
+  .ulink::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:1px;background:rgba(231,236,245,.2);}
+  .ulink:hover::after{background:rgba(231,236,245,.5);}
+
+  /* Mobile overrides */
+  @media(max-width:768px){
+    .luopan-wrap{opacity:.4;}
+    .frame-glow::before{inset:-10%;}
+    .testimonial{width:280px;}
+  }
+</style>
+</head>
+<body class="bg-deep text-[var(--ink)]">
+
+<!-- ========== NAVBAR ========== -->
+<nav class="navwrap fixed top-0 left-0 right-0 z-50">
+  <div class="max-w-[1240px] mx-auto px-5 lg:px-10 h-[64px] flex items-center justify-between gap-4">
+    <a href="#top" class="flex items-center flex-shrink-0">
+      <img src="logo_white.png" alt="Flow Tong Shu" class="h-8 w-auto"/>
+    </a>
+    <div class="hidden md:flex items-center gap-8 text-[14px]">
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#how" class="nav-link">How it works</a>
+      <a href="#pricing" class="nav-link">Pricing</a>
+      <a href="#faq" class="nav-link">FAQ</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="https://app.flowtongshu.com" class="hidden sm:inline-flex pill btn-ghost px-5 h-10 items-center text-[14px] font-medium">Log In</a>
+      <a href="https://app.flowtongshu.com/register" class="pill btn-primary px-5 h-10 inline-flex items-center text-[14px]">Try Free</a>
+      <button id="menu-btn" class="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-1.5 rounded-xl border border-[var(--line-strong)] bg-[rgba(255,255,255,0.04)]" aria-label="Toggle menu">
+        <span class="w-5 h-px bg-[var(--ink-dim)]"></span>
+        <span class="w-5 h-px bg-[var(--ink-dim)]"></span>
+        <span class="w-5 h-px bg-[var(--ink-dim)]"></span>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-menu" class="md:hidden border-t border-[var(--line)] bg-[rgba(11,13,18,0.95)] backdrop-blur-xl">
+    <div class="px-5 py-5 flex flex-col gap-1">
+      <a href="#features" class="nav-link py-3 text-[15px] border-b border-[var(--line)]" onclick="closeMobileMenu()">Features</a>
+      <a href="#how" class="nav-link py-3 text-[15px] border-b border-[var(--line)]" onclick="closeMobileMenu()">How it works</a>
+      <a href="#pricing" class="nav-link py-3 text-[15px] border-b border-[var(--line)]" onclick="closeMobileMenu()">Pricing</a>
+      <a href="#faq" class="nav-link py-3 text-[15px] border-b border-[var(--line)]" onclick="closeMobileMenu()">FAQ</a>
+      <a href="https://app.flowtongshu.com" class="nav-link py-3 text-[15px]">Log In</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ========== HERO ========== -->
+<section id="top" class="relative pt-[110px] pb-20 lg:pt-[160px] lg:pb-32 overflow-hidden">
+  <div class="blob" style="top:-200px;left:-100px;width:520px;height:520px;background:radial-gradient(closest-side,rgba(58,123,255,.55),transparent 70%);"></div>
+  <div class="blob" style="top:120px;right:-160px;width:520px;height:520px;background:radial-gradient(closest-side,rgba(143,187,255,.35),transparent 70%);"></div>
+  <div class="stars opacity-70"></div>
+  <div class="glint"></div>
+
+  <!-- Luopan compass — procedural (built by compass.js) -->
+  <div aria-hidden="true" class="luopan-wrap" style="width:min(980px,100vw);height:min(980px,100vw);">
+    <svg id="luopan" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg"></svg>
+  </div>
+
+  <div class="relative max-w-[1240px] mx-auto px-5 lg:px-10 text-center">
+    <div class="badge mx-auto mb-7 drift"><span class="dot"></span> The Chinese Almanac · 通書</div>
+
+    <h1 class="font-display h-display gradient-text">
+      Pick the right day,<br/>every time.
+    </h1>
+
+    <p class="mt-6 max-w-2xl mx-auto text-[16px] md:text-[18px] ink-dim leading-relaxed">
+      Weddings, launches, contracts, surgeries, big moves — the Tong Shu has guided 2,500 years of these decisions. Now it lives in your pocket, in plain English.
+    </p>
+
+    <div class="mt-7 flex items-center justify-center">
+      <span class="trial-badge">✓ 3-day free trial · No card required</span>
+    </div>
+
+    <div class="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
+      <a href="https://app.flowtongshu.com/register" class="pill btn-primary px-7 h-12 inline-flex items-center text-[15px] w-full sm:w-auto justify-center">
+        Start your 3-day trial
+        <svg width="14" height="14" viewBox="0 0 14 14" class="ml-2 flex-shrink-0"><path d="M3 7h8M8 3l4 4-4 4" stroke="#0B0D12" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="#features" class="pill btn-ghost px-7 h-12 inline-flex items-center text-[15px] w-full sm:w-auto justify-center font-medium">Watch a 60-second tour</a>
+    </div>
+
+    <!-- Hero screenshot -->
+    <div class="mt-14 lg:mt-20 relative mx-auto max-w-[980px] frame-glow">
+      <div class="frame">
+        <div class="flex items-center gap-1.5 px-4 h-9 border-b border-[var(--line)] bg-black/30">
+          <span class="w-2.5 h-2.5 rounded-full bg-[#FF5F57]/80"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-[#FEBC2E]/80"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-[#28C840]/80"></span>
+          <span class="ml-4 text-[11px] ink-mute">app.flowtongshu.com / today</span>
+        </div>
+        <img src="hero-daily-crop.png" alt="Flow Tong Shu — Daily Planner" class="w-full"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Wave: Hero → Testimonials -->
+<div class="wave-divider" style="background:#0B0D12;">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="#0E1116">
+      <animate attributeName="d" dur="11s" repeatCount="indefinite"
+        values="M0,40 C360,80 720,10 1080,40 C1260,55 1350,30 1440,45 L1440,80 L0,80 Z;
+                M0,45 C360,15 720,75 1080,40 C1260,20 1350,55 1440,35 L1440,80 L0,80 Z;
+                M0,40 C360,80 720,10 1080,40 C1260,55 1350,30 1440,45 L1440,80 L0,80 Z"/>
+    </path>
+  </svg>
+</div>
+
+<!-- ========== TESTIMONIALS MARQUEE ========== -->
+<section class="relative py-12 lg:py-16 overflow-hidden bg-[#0E1116]">
+  <div class="text-center max-w-2xl mx-auto px-5 mb-8">
+    <div class="flex items-center justify-center gap-3 mb-3">
+      <div class="stars-row">★★★★★</div>
+      <span class="text-[13px] ink-dim">4.9 average · 1,200+ reviews</span>
+    </div>
+    <p class="ink-dim text-[14px]">Trusted by founders, planners, and families across Asia &amp; the diaspora.</p>
+  </div>
+
+  <div class="marquee-track">
+    <div class="marquee">
+      <!-- testimonials, doubled for seamless loop -->
+      <div class="testimonial">
+        <div class="stars-row">★★★★★</div>
+        <p class="text-[14px] leading-relaxed mb-4">"Picked our restaurant opening date with this. Booked solid for the first month — coincidence? Maybe. I'll take it."</p>
+        <div class="text-[13px] font-semibold">Sarah Chen</div>
+        <div class="text-[12px] ink-mute">Restaurant owner · Singapore</div>
+      </div>
+      <div class="testimonial">
+        <div class="stars-row">★★★★★</div>
+        <p class="text-[14px] leading-relaxed mb-4">"My grandma used to call a master for every big decision. This app does what she did — without the awkward phone call."</p>
+        <div class="text-[13px] font-semibold">Marcus Wong</div>
+        <div class="text-[12px] ink-mute">Tech founder · Taipei</div>
+      </div>
+      <div class="testimonial">
+        <div class="stars-row">★★★★★</div>
+        <p class="text-[14px] leading-relaxed mb-4">"I plan around 80 weddings a year. Flow Tong Shu cut my date-research time in half — and clients love seeing the reasoning."</p>
+        <div class="text-[13px] font-semibold">Priya Rajaratnam</div>
+        <div class="text-[12px] ink-mute">Wedding planner · Kuala Lumpur</div>
+      </div>
+      <div class="testimonial">
+        <div class="stars-row">★★★★★</div>
+        <p class="text-[14px] leading-relaxed mb-4">"Even if you don't believe in feng shui, the daily prompts make you slow down and actually think. Worth it for that alone."</p>
+        <div class="text-[13px] font-semibold">Anita Tan</div>
+        <div class="text-[12px] ink-mute">Designer · Hong Kong</div>
+      </div>
+      <div class="testimonial">
+        <div class="stars-row">★★★★☆</div>
+        <p class="text-[14px] leading-relaxed mb-4">"My clients trust the dates I suggest. I trust the almanac. Closed three property deals on dates this app picked."</p>
+        <div class="text-[13px] font-semibold">David Lim</div>
+        <div class="text-[12px] ink-mute">Real estate agent · Penang</div>
+      </div>
+      <div class="testimonial">
+        <div class="stars-row">★★★★★</div>
+        <p class="text-[14px] leading-relaxed mb-4">"Started for fun. Now I check it before booking flights, signing leases, even haircuts. It's just nicer to live this way."</p>
+        <div class="text-[13px] font-semibold">Wei H.</div>
+        <div class="text-[12px] ink-mute">Just curious · Vancouver</div>
+      </div>
+
+      <!-- duplicate set for seamless loop -->
+      <div class="testimonial">
+        <div class="stars-row">★★★★★</div>
+        <p class="text-[14px] leading-relaxed mb-4">"Picked our restaurant opening date with this. Booked solid for the first month — coincidence? Maybe. I'll take it."</p>
+        <div class="text-[13px] font-semibold">Sarah Chen</div>
+        <div class="text-[12px] ink-mute">Restaurant owner · Singapore</div>
+      </div>
+      <div class="testimonial">
+        <div class="stars-row">★★★★★</div>
+        <p class="text-[14px] leading-relaxed mb-4">"My grandma used to call a master for every big decision. This app does what she did — without the awkward phone call."</p>
+        <div class="text-[13px] font-semibold">Marcus Wong</div>
+        <div class="text-[12px] ink-mute">Tech founder · Taipei</div>
+      </div>
+      <div class="testimonial">
+        <div class="stars-row">★★★★★</div>
+        <p class="text-[14px] leading-relaxed mb-4">"I plan around 80 weddings a year. Flow Tong Shu cut my date-research time in half — and clients love seeing the reasoning."</p>
+        <div class="text-[13px] font-semibold">Priya Rajaratnam</div>
+        <div class="text-[12px] ink-mute">Wedding planner · Kuala Lumpur</div>
+      </div>
+      <div class="testimonial">
+        <div class="stars-row">★★★★★</div>
+        <p class="text-[14px] leading-relaxed mb-4">"Even if you don't believe in feng shui, the daily prompts make you slow down and actually think. Worth it for that alone."</p>
+        <div class="text-[13px] font-semibold">Anita Tan</div>
+        <div class="text-[12px] ink-mute">Designer · Hong Kong</div>
+      </div>
+      <div class="testimonial">
+        <div class="stars-row">★★★★☆</div>
+        <p class="text-[14px] leading-relaxed mb-4">"My clients trust the dates I suggest. I trust the almanac. Closed three property deals on dates this app picked."</p>
+        <div class="text-[13px] font-semibold">David Lim</div>
+        <div class="text-[12px] ink-mute">Real estate agent · Penang</div>
+      </div>
+      <div class="testimonial">
+        <div class="stars-row">★★★★★</div>
+        <p class="text-[14px] leading-relaxed mb-4">"Started for fun. Now I check it before booking flights, signing leases, even haircuts. It's just nicer to live this way."</p>
+        <div class="text-[13px] font-semibold">Wei H.</div>
+        <div class="text-[12px] ink-mute">Just curious · Vancouver</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Wave: Testimonials → Features -->
+<div class="wave-divider" style="background:#0E1116;">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="#13161D">
+      <animate attributeName="d" dur="13s" repeatCount="indefinite"
+        values="M0,45 C300,15 720,70 1080,40 C1260,25 1350,55 1440,40 L1440,80 L0,80 Z;
+                M0,35 C300,75 720,10 1080,45 C1260,65 1350,25 1440,50 L1440,80 L0,80 Z;
+                M0,45 C300,15 720,70 1080,40 C1260,25 1350,55 1440,40 L1440,80 L0,80 Z"/>
+    </path>
+  </svg>
+</div>
+
+<!-- ========== FEATURES ========== -->
+<section id="features" class="bg-panel py-20 lg:py-32 relative overflow-hidden">
+  <div class="absolute inset-0 stars opacity-25"></div>
+  <div class="relative max-w-[1240px] mx-auto px-5 lg:px-10">
+
+    <div class="text-center max-w-2xl mx-auto mb-16">
+      <div class="badge mb-6"><span class="dot"></span> What's inside</div>
+      <h2 class="font-display h-section gradient-text">Four ways to read the day</h2>
+      <p class="mt-5 ink-dim text-[16px] leading-relaxed">Each tool is rooted in classical Chinese metaphysics — and built for how you actually live now.</p>
+    </div>
+
+    <!-- ROW 1 — Daily View -->
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center mb-24 lg:mb-36">
+      <div class="lg:col-span-5 order-2 lg:order-1">
+        <div class="text-[12px] uppercase tracking-[.22em] text-blue mb-4 font-bold">01 · Daily View</div>
+        <h3 class="font-display h-feature">Wake up knowing today's energy</h3>
+        <p class="mt-5 ink-dim text-[15px] leading-relaxed max-w-md">Instead of a generic horoscope, you get the actual classical reading — pillar, element, what to pursue, what to defer — written in plain English you can act on.</p>
+        <ul class="mt-7 space-y-4 text-[14px]">
+          <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--blue)] flex-shrink-0"></span><span><strong class="text-white">Today's pillar &amp; element</strong> <span class="ink-dim">— heavenly stem, earthly branch, and the hour you're in.</span></span></li>
+          <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--blue)] flex-shrink-0"></span><span><strong class="text-white">What today favours</strong> <span class="ink-dim">— and what to leave for tomorrow.</span></span></li>
+          <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--blue)] flex-shrink-0"></span><span><strong class="text-white">Pin events to the auspicious window</strong> <span class="ink-dim">in one tap.</span></span></li>
+        </ul>
+        <a href="https://app.flowtongshu.com/register" class="mt-8 inline-flex items-center gap-2 ulink text-[14px] font-medium">Read today's flow <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="lg:col-span-7 order-1 lg:order-2">
+        <div class="frame frame-glow mx-auto max-w-[340px]">
+          <img src="phone-daily.png" alt="Daily View — mobile" class="w-full"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 2 — Monthly View -->
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center mb-24 lg:mb-36">
+      <div class="lg:col-span-7">
+        <div class="frame frame-glow">
+          <img src="monthly.png" alt="Monthly View — auspicious dates calendar" class="w-full"/>
+        </div>
+      </div>
+      <div class="lg:col-span-5">
+        <div class="text-[12px] uppercase tracking-[.22em] text-blue mb-4 font-bold">02 · Monthly View</div>
+        <h3 class="font-display h-feature">See the whole month at a glance</h3>
+        <p class="mt-5 ink-dim text-[15px] leading-relaxed max-w-md">A lunar-aware calendar that shows you exactly which days favour which actions — before you commit to anything that matters.</p>
+        <ul class="mt-7 space-y-4 text-[14px]">
+          <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--blue)] flex-shrink-0"></span><span><strong class="text-white">Solar &amp; lunar dates</strong> <span class="ink-dim">side by side, including 24 solar terms.</span></span></li>
+          <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--blue)] flex-shrink-0"></span><span><strong class="text-white">12 Day Officers</strong> <span class="ink-dim">— spot windows for travel, signing, opening, moving.</span></span></li>
+          <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--blue)] flex-shrink-0"></span><span><strong class="text-white">Filter by star or constellation</strong> <span class="ink-dim">to find exactly the day type you need.</span></span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ROW 3 — Natal Chart -->
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center mb-24 lg:mb-36">
+      <div class="lg:col-span-5 order-2 lg:order-1">
+        <div class="text-[12px] uppercase tracking-[.22em] text-blue mb-4 font-bold">03 · Natal Chart · 八字</div>
+        <h3 class="font-display h-feature">Your full Bazi chart, decoded</h3>
+        <p class="mt-5 ink-dim text-[15px] leading-relaxed max-w-md">Hour, day, month, year — your four pillars of birth, plus luck pillars and current annual influence. The classical chart, beautifully rendered and tappable.</p>
+        <ul class="mt-7 space-y-4 text-[14px]">
+          <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--blue)] flex-shrink-0"></span><span><strong class="text-white">Heavenly stems &amp; earthly branches</strong> <span class="ink-dim">with hidden stems and ten gods.</span></span></li>
+          <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--blue)] flex-shrink-0"></span><span><strong class="text-white">10-year luck pillars</strong> <span class="ink-dim">— from age 9 to 99, current decade highlighted.</span></span></li>
+          <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--blue)] flex-shrink-0"></span><span><strong class="text-white">Multiple profiles</strong> <span class="ink-dim">— compare charts for family, partners, your team.</span></span></li>
+        </ul>
+      </div>
+      <div class="lg:col-span-7 order-1 lg:order-2">
+        <div class="frame frame-glow mx-auto max-w-[600px]">
+          <img src="natal.png" alt="Bazi Natal Chart — four pillars" class="w-full"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 4 — Date Selector -->
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center mb-24 lg:mb-36">
+      <div class="lg:col-span-7">
+        <div class="frame frame-glow">
+          <img src="date-selection.png" alt="Date Selector — ranked auspicious dates" class="w-full"/>
+        </div>
+      </div>
+      <div class="lg:col-span-5">
+        <div class="text-[12px] uppercase tracking-[.22em] text-blue mb-4 font-bold">04 · Date Selector · 擇日</div>
+        <h3 class="font-display h-feature">Find your perfect date in seconds</h3>
+        <p class="mt-5 ink-dim text-[15px] leading-relaxed max-w-md">Tell the almanac what you're planning — a wedding, a launch, a move, a contract — and it surfaces the days that favour exactly that, ranked.</p>
+        <ul class="mt-7 space-y-4 text-[14px]">
+          <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--blue)] flex-shrink-0"></span><span><strong class="text-white">12 Day Officers</strong> <span class="ink-dim">— Open, Establish, Close, Receive, and the rest.</span></span></li>
+          <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--blue)] flex-shrink-0"></span><span><strong class="text-white">Personalized to your chart</strong> <span class="ink-dim">— days that clash with your pillars are excluded.</span></span></li>
+          <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--blue)] flex-shrink-0"></span><span><strong class="text-white">Up to ±12 months ahead</strong> <span class="ink-dim">— plan a year of milestones in one sitting.</span></span></li>
+        </ul>
+        <a href="https://app.flowtongshu.com/register" class="mt-8 inline-flex items-center gap-2 ulink text-[14px] font-medium">Find your date <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+
+    <!-- ROW 5 — Schedule & Calendar Sync -->
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+      <div class="lg:col-span-5 order-2 lg:order-1">
+        <div class="text-[12px] uppercase tracking-[.22em] text-blue mb-4 font-bold">05 · Schedule &amp; Sync</div>
+        <h3 class="font-display h-feature">Claim your hours. Sync to your calendar.</h3>
+        <p class="mt-5 ink-dim text-[15px] leading-relaxed max-w-md">Finding the right day is only half the work — the right hour seals it. Pick the auspicious window, name your event, and push it straight to Google or Apple Calendar in one tap.</p>
+        <ul class="mt-7 space-y-4 text-[14px]">
+          <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--blue)] flex-shrink-0"></span><span><strong class="text-white">Hour-by-hour ratings</strong> <span class="ink-dim">— each window scored by heavenly stem, earthly branch, and star quality.</span></span></li>
+          <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--blue)] flex-shrink-0"></span><span><strong class="text-white">Name it and schedule it</strong> <span class="ink-dim">— set your start and end time, add a note, and it lands in your calendar with almanac context.</span></span></li>
+          <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--blue)] flex-shrink-0"></span><span><strong class="text-white">Save dates with intention</strong> <span class="ink-dim">— tag a day as Auspicious, Personal Peak, or Day to Avoid, and sync it instantly.</span></span></li>
+        </ul>
+        <a href="https://app.flowtongshu.com/register" class="mt-8 inline-flex items-center gap-2 ulink text-[14px] font-medium">Start syncing <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="lg:col-span-7 order-1 lg:order-2">
+        <div class="grid grid-cols-2 gap-4">
+          <div class="frame frame-glow">
+            <img src="phone-schedule.png" alt="Add new schedule — auspicious time window" class="w-full"/>
+          </div>
+          <div class="frame frame-glow">
+            <img src="phone-savedate.png" alt="Save this date — sync to calendar" class="w-full"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Wave: Features → How -->
+<div class="wave-divider" style="background:#13161D;">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="#0B0D12">
+      <animate attributeName="d" dur="12s" repeatCount="indefinite"
+        values="M0,40 C360,80 720,10 1080,40 C1260,55 1350,30 1440,45 L1440,80 L0,80 Z;
+                M0,50 C360,20 720,70 1080,35 C1260,15 1350,55 1440,30 L1440,80 L0,80 Z;
+                M0,40 C360,80 720,10 1080,40 C1260,55 1350,30 1440,45 L1440,80 L0,80 Z"/>
+    </path>
+  </svg>
+</div>
+
+<!-- ========== HOW IT WORKS ========== -->
+<section id="how" class="py-20 lg:py-28 relative overflow-hidden">
+  <div class="absolute inset-0 stars opacity-25"></div>
+  <div class="blob" style="bottom:-150px;left:-150px;width:480px;height:480px;background:radial-gradient(closest-side,rgba(58,123,255,.4),transparent 70%);"></div>
+
+  <div class="relative max-w-[1180px] mx-auto px-5 lg:px-10">
+    <div class="text-center max-w-2xl mx-auto mb-14">
+      <div class="badge mb-6"><span class="dot"></span> How it works</div>
+      <h2 class="font-display h-section gradient-text">Three steps. About a minute.</h2>
+      <p class="mt-5 ink-dim text-[16px] leading-relaxed">No charts to memorize, no Chinese to learn. The almanac does the work — you just read your day.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6">
+      <div class="step-card">
+        <div class="step-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4"/>
+            <path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/>
+          </svg>
+        </div>
+        <div class="step-tag">Step One</div>
+        <h3 class="font-display text-[20px] mb-3 text-white">Tell us when you were born</h3>
+        <p class="ink-dim leading-relaxed text-[14px]">Date, hour, place. We compute your four pillars and 10-year luck cycle in the background. No card needed for the trial.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+          </svg>
+        </div>
+        <div class="step-tag">Step Two</div>
+        <h3 class="font-display text-[20px] mb-3 text-white">Read your day</h3>
+        <p class="ink-dim leading-relaxed text-[14px]">Open Flow Tong Shu in the morning. Today's pillar, energy, and counsel — already waiting, written in plain English.</p>
+      </div>
+
+      <div class="step-card">
+        <div class="step-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 7v5l3 2"/>
+          </svg>
+        </div>
+        <div class="step-tag">Step Three</div>
+        <h3 class="font-display text-[20px] mb-3 text-white">Plan with confidence</h3>
+        <p class="ink-dim leading-relaxed text-[14px]">Use the date selector for what matters — weddings, launches, contracts. Sync auspicious windows to your calendar in one tap.</p>
+      </div>
+    </div>
+
+    <div class="mt-12 text-center">
+      <a href="https://app.flowtongshu.com/register" class="pill btn-primary px-7 h-12 inline-flex items-center text-[15px]">
+        Try it free for 3 days
+        <svg width="14" height="14" viewBox="0 0 14 14" class="ml-2 flex-shrink-0"><path d="M3 7h8M8 3l4 4-4 4" stroke="#0B0D12" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Wave: How → Pricing -->
+<div class="wave-divider" style="background:#0B0D12;">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="#13161D">
+      <animate attributeName="d" dur="10s" repeatCount="indefinite"
+        values="M0,45 C300,15 720,70 1080,40 C1260,25 1350,55 1440,40 L1440,80 L0,80 Z;
+                M0,30 C300,70 720,10 1080,50 C1260,70 1350,30 1440,55 L1440,80 L0,80 Z;
+                M0,45 C300,15 720,70 1080,40 C1260,25 1350,55 1440,40 L1440,80 L0,80 Z"/>
+    </path>
+  </svg>
+</div>
+
+<!-- ========== PRICING ========== -->
+<section id="pricing" class="py-20 lg:py-32 relative overflow-hidden" style="background:#13161D;">
+  <div class="absolute inset-0 stars opacity-20"></div>
+  <div class="relative max-w-[1320px] mx-auto px-5 lg:px-10">
+
+    <div class="text-center max-w-2xl mx-auto mb-10">
+      <div class="badge mb-6"><span class="dot"></span> Pricing</div>
+      <h2 class="font-display h-section gradient-text">Plans that scale with you</h2>
+      <p class="mt-5 ink-dim text-[16px] leading-relaxed">Start free. Upgrade when you need more. Cancel any time, in two clicks.</p>
+      <div class="mt-5 inline-flex items-center gap-2 trial-badge">✓ Every paid plan starts with a 3-day free trial</div>
+    </div>
+
+    <div class="flex items-center justify-center gap-4 mb-12">
+      <span id="lab-monthly" class="text-[14px] text-white font-medium">Monthly</span>
+      <div class="toggle" id="billing-toggle" role="switch" aria-checked="false" tabindex="0">
+        <div class="knob"></div>
+      </div>
+      <span id="lab-yearly" class="text-[14px] ink-dim font-medium">Yearly <span class="text-blue text-[12px] font-bold ml-1">−20%</span></span>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+
+      <!-- Free -->
+      <div class="plan p-6 flex flex-col">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="w-2 h-2 rounded-full" style="background:#667085;"></span>
+          <span class="text-[11px] uppercase tracking-[.2em] ink-mute font-bold">Free</span>
+        </div>
+        <div class="font-display text-[24px]">Free</div>
+        <div class="mt-2 ink-dim text-[13px]">Begin your daily practice.</div>
+        <div class="mt-6">
+          <div class="flex items-baseline gap-1">
+            <span class="font-display text-[36px]">$0</span>
+          </div>
+          <div class="text-[12px] ink-mute mt-1">Free forever</div>
+        </div>
+        <ul class="mt-6 space-y-3 text-[13px] ink-dim flex-1">
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> 3 daily readings / day</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Daily View</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> 1 Bazi profile</li>
+          <li class="flex gap-2.5 opacity-40"><span class="flex-shrink-0">·</span> Monthly View</li>
+          <li class="flex gap-2.5 opacity-40"><span class="flex-shrink-0">·</span> Date Selector</li>
+        </ul>
+        <a href="https://app.flowtongshu.com/register?plan=free" class="mt-7 pill btn-ghost w-full h-11 inline-flex items-center justify-center text-[13px] font-medium">Start free</a>
+      </div>
+
+      <!-- Lite -->
+      <div class="plan p-6 flex flex-col">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="w-2 h-2 rounded-full" style="background:#22C55E;"></span>
+          <span class="text-[11px] uppercase tracking-[.2em] font-bold" style="color:#4ADE80;">Lite</span>
+        </div>
+        <div class="font-display text-[24px]">Lite</div>
+        <div class="mt-2 ink-dim text-[13px]">For the regular practitioner.</div>
+        <div class="mt-6">
+          <div class="flex items-baseline gap-1">
+            <span class="font-display text-[36px]">$<span class="price" data-m="9" data-y="7">9</span></span>
+            <span class="ink-mute text-[13px]">/ mo</span>
+          </div>
+          <div class="text-[11px] ink-mute mt-1 yearly-note hidden">$84 billed yearly</div>
+          <div class="text-[11px] ink-mute mt-1 monthly-note">Billed monthly</div>
+        </div>
+        <ul class="mt-6 space-y-3 text-[13px] ink-dim flex-1">
+          <li class="flex gap-2.5"><span style="color:#4ADE80;" class="flex-shrink-0">✓</span> 20 daily readings / day</li>
+          <li class="flex gap-2.5"><span style="color:#4ADE80;" class="flex-shrink-0">✓</span> Monthly View</li>
+          <li class="flex gap-2.5"><span style="color:#4ADE80;" class="flex-shrink-0">✓</span> 2 Bazi profiles</li>
+          <li class="flex gap-2.5"><span style="color:#4ADE80;" class="flex-shrink-0">✓</span> Journal &amp; Schedule</li>
+        </ul>
+        <a href="https://app.flowtongshu.com/register?plan=lite" class="mt-7 pill btn-ghost w-full h-11 inline-flex items-center justify-center text-[13px] font-medium">Try free 3 days</a>
+      </div>
+
+      <!-- Pro (highlighted) -->
+      <div class="plan plan-pop p-6 flex flex-col relative">
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 h-6 inline-flex items-center pill text-[10px] uppercase tracking-[.18em] font-bold whitespace-nowrap" style="background:linear-gradient(180deg,#8AB6FF,#3A7BFF);color:#0B0D12;">Most Popular</div>
+        <div class="flex items-center gap-2 mb-3">
+          <span class="w-2 h-2 rounded-full" style="background:#3A7BFF;"></span>
+          <span class="text-[11px] uppercase tracking-[.2em] font-bold" style="color:#7BA8FF;">Pro</span>
+        </div>
+        <div class="font-display text-[24px]">Pro</div>
+        <div class="mt-2 ink-dim text-[13px]">The full almanac, in motion.</div>
+        <div class="mt-6">
+          <div class="flex items-baseline gap-1">
+            <span class="font-display text-[36px]">$<span class="price" data-m="19" data-y="15">19</span></span>
+            <span class="ink-mute text-[13px]">/ mo</span>
+          </div>
+          <div class="text-[11px] ink-mute mt-1 yearly-note hidden">$180 billed yearly</div>
+          <div class="text-[11px] ink-mute mt-1 monthly-note">Billed monthly</div>
+        </div>
+        <ul class="mt-6 space-y-3 text-[13px] ink-dim flex-1">
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> 50 daily readings / day</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Date Selector</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> 4 Bazi profiles</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> ±6 month range</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Calendar sync</li>
+        </ul>
+        <a href="https://app.flowtongshu.com/register?plan=pro" class="mt-7 pill btn-primary w-full h-11 inline-flex items-center justify-center text-[13px]">Try free 3 days</a>
+      </div>
+
+      <!-- Master -->
+      <div class="plan p-6 flex flex-col">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="w-2 h-2 rounded-full" style="background:#8B5CF6;"></span>
+          <span class="text-[11px] uppercase tracking-[.2em] font-bold" style="color:#B69BFA;">Master</span>
+        </div>
+        <div class="font-display text-[24px]">Master</div>
+        <div class="mt-2 ink-dim text-[13px]">Deep practice, wider horizon.</div>
+        <div class="mt-6">
+          <div class="flex items-baseline gap-1">
+            <span class="font-display text-[36px]">$<span class="price" data-m="39" data-y="31">39</span></span>
+            <span class="ink-mute text-[13px]">/ mo</span>
+          </div>
+          <div class="text-[11px] ink-mute mt-1 yearly-note hidden">$372 billed yearly</div>
+          <div class="text-[11px] ink-mute mt-1 monthly-note">Billed monthly</div>
+        </div>
+        <ul class="mt-6 space-y-3 text-[13px] ink-dim flex-1">
+          <li class="flex gap-2.5"><span style="color:#B69BFA;" class="flex-shrink-0">✓</span> 100 daily readings / day</li>
+          <li class="flex gap-2.5"><span style="color:#B69BFA;" class="flex-shrink-0">✓</span> 10 Bazi profiles</li>
+          <li class="flex gap-2.5"><span style="color:#B69BFA;" class="flex-shrink-0">✓</span> ±12 month range</li>
+          <li class="flex gap-2.5"><span style="color:#B69BFA;" class="flex-shrink-0">✓</span> Advanced annotations</li>
+        </ul>
+        <a href="https://app.flowtongshu.com/register?plan=master" class="mt-7 pill btn-ghost w-full h-11 inline-flex items-center justify-center text-[13px] font-medium">Try free 3 days</a>
+      </div>
+
+      <!-- Business -->
+      <div class="plan p-6 flex flex-col">
+        <div class="flex items-center gap-2 mb-3">
+          <span class="w-2 h-2 rounded-full" style="background:#F59E0B;"></span>
+          <span class="text-[11px] uppercase tracking-[.2em] font-bold" style="color:#F5C56B;">Business</span>
+        </div>
+        <div class="font-display text-[24px]">Business</div>
+        <div class="mt-2 ink-dim text-[13px]">For teams that plan together.</div>
+        <div class="mt-6">
+          <div class="flex items-baseline gap-1">
+            <span class="font-display text-[36px]">$<span class="price" data-m="59" data-y="47">59</span></span>
+            <span class="ink-mute text-[13px]">/ mo</span>
+          </div>
+          <div class="text-[11px] ink-mute mt-1 yearly-note hidden">$564 billed yearly</div>
+          <div class="text-[11px] ink-mute mt-1 monthly-note">Billed monthly</div>
+        </div>
+        <ul class="mt-6 space-y-3 text-[13px] ink-dim flex-1">
+          <li class="flex gap-2.5"><span style="color:#F5C56B;" class="flex-shrink-0">✓</span> 200 daily readings / day</li>
+          <li class="flex gap-2.5"><span style="color:#F5C56B;" class="flex-shrink-0">✓</span> 40 Bazi profiles</li>
+          <li class="flex gap-2.5"><span style="color:#F5C56B;" class="flex-shrink-0">✓</span> Team workspace</li>
+          <li class="flex gap-2.5"><span style="color:#F5C56B;" class="flex-shrink-0">✓</span> Shared planning rituals</li>
+          <li class="flex gap-2.5"><span style="color:#F5C56B;" class="flex-shrink-0">✓</span> Priority support</li>
+        </ul>
+        <a href="https://app.flowtongshu.com/register?plan=business" class="mt-7 pill btn-ghost w-full h-11 inline-flex items-center justify-center text-[13px] font-medium">Try free 3 days</a>
+      </div>
+
+    </div>
+
+    <p class="text-center mt-10 ink-mute text-[13px]">All paid plans start with a 3-day free trial · No card required · Cancel anytime</p>
+  </div>
+</section>
+
+<!-- Wave: Pricing → FAQ -->
+<div class="wave-divider" style="background:#13161D;">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="#0B0D12">
+      <animate attributeName="d" dur="14s" repeatCount="indefinite"
+        values="M0,40 C360,75 720,15 1080,45 C1260,60 1350,30 1440,40 L1440,80 L0,80 Z;
+                M0,50 C360,20 720,70 1080,35 C1260,15 1350,55 1440,45 L1440,80 L0,80 Z;
+                M0,40 C360,75 720,15 1080,45 C1260,60 1350,30 1440,40 L1440,80 L0,80 Z"/>
+    </path>
+  </svg>
+</div>
+
+<!-- ========== FAQ ========== -->
+<section id="faq" class="py-20 lg:py-28 relative overflow-hidden">
+  <div class="absolute inset-0 stars opacity-20"></div>
+  <div class="relative max-w-[820px] mx-auto px-5 lg:px-10">
+    <div class="text-center mb-12">
+      <div class="badge mb-6"><span class="dot"></span> Questions</div>
+      <h2 class="font-display h-section gradient-text">Things people ask</h2>
+      <p class="mt-5 ink-dim text-[16px] leading-relaxed">Short answers to what comes up most.</p>
+    </div>
+
+    <div class="flex flex-col gap-3">
+      <details class="faq-item" open>
+        <summary>What is the Tong Shu, exactly?</summary>
+        <div class="faq-body">The Tong Shu (通書) is the 2,500-year-old Chinese almanac — the source most Chinese families consult for choosing wedding dates, opening businesses, signing contracts, or starting anything that matters. Flow Tong Shu computes the same readings, instantly, in plain English.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Do I need to know Chinese astrology?</summary>
+        <div class="faq-body">Not at all. Every reading is in plain English. Tap any term — pillar, branch, day officer — for a one-line explanation. The classical wisdom does the work; you just read your day.</div>
+      </details>
+      <details class="faq-item">
+        <summary>How does the 3-day free trial work?</summary>
+        <div class="faq-body">Pick any paid plan, get full access for 3 days. No credit card required. If you don't continue, your account stays — just on the Free tier with the daily reading.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Can I cancel anytime?</summary>
+        <div class="faq-body">Yes. Two clicks from your account, anytime. You'll keep paid access until the end of the billing period — no questions, no friction.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Is my birth data private?</summary>
+        <div class="faq-body">Always. Your birth profile is encrypted, never sold, never shared, never used for advertising. We follow the same data principles a temple would: what's yours stays yours.</div>
+      </details>
+      <details class="faq-item">
+        <summary>What's the difference between the plans?</summary>
+        <div class="faq-body">Free gives you the daily reading. Lite adds the monthly view and journal. Pro unlocks the date selector — the most-used feature for planning real events. Master extends your range to ±12 months. Business is for teams that plan together.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Does it work in any time zone?</summary>
+        <div class="faq-body">Yes. Flow Tong Shu calculates pillars and day officers based on solar terms in your local time zone, so the reading is always correct for where you are.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FINAL CTA ========== -->
+<section class="relative overflow-hidden py-24 lg:py-36">
+  <div class="blob" style="top:50%;left:50%;transform:translate(-50%,-50%);width:780px;height:780px;background:radial-gradient(closest-side,rgba(58,123,255,.45),transparent 70%);opacity:.8;"></div>
+  <div class="absolute inset-0 stars opacity-50"></div>
+
+  <div class="relative max-w-[820px] mx-auto px-5 text-center">
+    <div class="badge mb-7"><span class="dot"></span> Begin · 起點</div>
+    <h2 class="font-display gradient-text" style="font-size:clamp(36px,6vw,72px);line-height:1.02;letter-spacing:-0.035em;font-weight:800;">The right day is<br/>already on the calendar.</h2>
+    <p class="mt-6 ink-dim text-[16px] max-w-xl mx-auto leading-relaxed">Open the almanac tomorrow morning. See what 2,500 years of accumulated rhythm has to say about your week.</p>
+    <div class="mt-6">
+      <span class="trial-badge">✓ 3-day free trial · No credit card · Cancel anytime</span>
+    </div>
+    <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+      <a href="https://app.flowtongshu.com/register" class="pill btn-primary px-8 h-12 inline-flex items-center text-[15px] w-full sm:w-auto justify-center">
+        Start free — Pick your day
+        <svg width="14" height="14" viewBox="0 0 14 14" class="ml-2 flex-shrink-0"><path d="M3 7h8M8 3l4 4-4 4" stroke="#0B0D12" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+      <a href="https://app.flowtongshu.com" class="pill btn-ghost px-8 h-12 inline-flex items-center text-[15px] w-full sm:w-auto justify-center font-medium">I already have an account</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer class="bg-deep border-t border-[var(--line)] py-14">
+  <div class="max-w-[1240px] mx-auto px-5 lg:px-10">
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-8 mb-10">
+      <div class="col-span-2">
+        <a href="#top" class="inline-flex items-center mb-4">
+          <img src="logo_white.png" alt="Flow Tong Shu" class="h-8 w-auto"/>
+        </a>
+        <p class="ink-dim text-[13px] max-w-xs leading-relaxed">The Chinese almanac, reimagined for the modern world. 2,500 years of wisdom — quietly woven into your day.</p>
+      </div>
+      <div>
+        <div class="text-[11px] uppercase tracking-[.22em] ink-mute mb-4 font-bold">Product</div>
+        <ul class="space-y-3 text-[13px]">
+          <li><a class="nav-link" href="#features">Features</a></li>
+          <li><a class="nav-link" href="#pricing">Pricing</a></li>
+          <li><a class="nav-link" href="#how">How it works</a></li>
+          <li><a class="nav-link" href="#faq">FAQ</a></li>
+          <li><a class="nav-link" href="https://app.flowtongshu.com">Open the app</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="text-[11px] uppercase tracking-[.22em] ink-mute mb-4 font-bold">Resources</div>
+        <ul class="space-y-3 text-[13px]">
+          <li><a class="nav-link" href="#">Glossary</a></li>
+          <li><a class="nav-link" href="#">The Tong Shu</a></li>
+          <li><a class="nav-link" href="#">Bazi primer</a></li>
+          <li><a class="nav-link" href="#">Solar terms</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="text-[11px] uppercase tracking-[.22em] ink-mute mb-4 font-bold">Company</div>
+        <ul class="space-y-3 text-[13px]">
+          <li><a class="nav-link" href="#">About</a></li>
+          <li><a class="nav-link" href="#">Contact</a></li>
+          <li><a class="nav-link" href="#">Privacy</a></li>
+          <li><a class="nav-link" href="#">Terms</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="ftr-line mb-6"></div>
+    <div class="flex flex-col md:flex-row items-center justify-between gap-3 text-[12px] ink-mute">
+      <div>© 2026 Flow Tong Shu · 通書</div>
+      <div class="flex items-center gap-5">
+        <a href="#" class="nav-link">Twitter</a>
+        <a href="#" class="nav-link">Instagram</a>
+        <a href="mailto:hello@flowtongshu.com" class="nav-link">hello@flowtongshu.com</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  function closeMobileMenu() { mobileMenu.classList.remove('open'); }
+  menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+
+  (function(){
+    const tog = document.getElementById('billing-toggle');
+    const labM = document.getElementById('lab-monthly');
+    const labY = document.getElementById('lab-yearly');
+    let yearly = false;
+    function apply(){
+      tog.classList.toggle('on', yearly);
+      tog.setAttribute('aria-checked', String(yearly));
+      labM.classList.toggle('text-white', !yearly);
+      labM.classList.toggle('ink-dim', yearly);
+      labY.classList.toggle('text-white', yearly);
+      labY.classList.toggle('ink-dim', !yearly);
+      document.querySelectorAll('.price').forEach(el => {
+        el.textContent = yearly ? el.dataset.y : el.dataset.m;
+      });
+      document.querySelectorAll('.yearly-note').forEach(el => el.classList.toggle('hidden', !yearly));
+      document.querySelectorAll('.monthly-note').forEach(el => el.classList.toggle('hidden', yearly));
+    }
+    tog.addEventListener('click', () => { yearly = !yearly; apply(); });
+    tog.addEventListener('keydown', e => { if(e.key===' '||e.key==='Enter'){ e.preventDefault(); yearly=!yearly; apply(); }});
+    apply();
+  })();
+</script>
+<script src="compass.js"></script>
+</body>
+</html>
