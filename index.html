@@ -170,8 +170,30 @@
   .tp-home{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:120px;height:4px;border-radius:2px;background:#14141a;opacity:.85;z-index:25;}
   #tp-phone1{transform:rotate(-7deg) translate(-150px,-10px);z-index:1;}
   #tp-phone2{transform:rotate(6deg) translate(160px,70px);z-index:2;}
-  @media(max-width:760px){.tp-stage{transform:scale(0.78);}}
-  @media(max-width:560px){.tp-stage{transform:scale(0.58);}}
+  @media(max-width:900px){
+    .tp-stage{aspect-ratio:760/900;}
+    .tp-phone{width:240px;height:488px;border-radius:42px;padding:9px;}
+    .tp-screen{border-radius:33px;}
+    .tp-notch{width:78px;height:22px;top:8px;}
+    .tp-status{height:38px;padding:12px 20px 0;font-size:11px;}
+    #tp-phone1{transform:rotate(-7deg) translate(-105px,-10px);}
+    #tp-phone2{transform:rotate(6deg) translate(115px,55px);}
+  }
+  @media(max-width:560px){
+    .tp-stage{aspect-ratio:1/1.05;max-width:360px;}
+    .tp-phone{width:170px;height:346px;border-radius:30px;padding:7px;}
+    .tp-screen{border-radius:23px;}
+    .tp-notch{width:58px;height:16px;top:6px;border-radius:12px;}
+    .tp-status{height:30px;padding:9px 14px 0;font-size:9px;}
+    .tp-home{width:80px;height:3px;}
+    #tp-phone1{transform:rotate(-6deg) translate(-72px,-6px);}
+    #tp-phone2{transform:rotate(5deg) translate(78px,40px);}
+  }
+  @media(max-width:380px){
+    .tp-phone{width:148px;height:301px;}
+    #tp-phone1{transform:rotate(-6deg) translate(-62px,-4px);}
+    #tp-phone2{transform:rotate(5deg) translate(68px,34px);}
+  }
   .frame-glow{position:relative;}
   .feat-img{aspect-ratio:3/2;overflow:hidden;}
   .feat-img img{width:100%;height:100%;object-fit:cover;display:block;}
@@ -355,6 +377,105 @@
     .reveal,.hero-in{opacity:1!important;transform:none!important;animation:none!important;transition:none!important;}
     .parallax{transform:none!important;}
   }
+
+  /* Feature rows on tablet/mobile: center + constrain so they don't feel sparse */
+  @media(max-width:1023px){
+    #features .grid{justify-items:center;}
+    #features .grid > div{width:100%;max-width:560px;text-align:center;}
+    #features .grid p,
+    #features .grid > div > .text-\[12px\]{margin-left:auto;margin-right:auto;}
+    #features .grid ul{max-width:480px;margin-left:auto;margin-right:auto;}
+    #features .grid ul li{text-align:left;}
+    #features .grid .ulink{display:inline-flex;}
+    #features .frame,#features .tp-stage{margin-left:auto;margin-right:auto;}
+  }
+
+  /* Plan grid: 5-up on desktop, swipeable carousel on tablet + mobile */
+  .plan-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1rem;}
+  @media(max-width:1023px){
+    .plan-grid{
+      display:flex;
+      grid-template-columns:none;
+      overflow-x:auto;
+      scroll-snap-type:x mandatory;
+      gap:1rem;
+      padding:.75rem 2rem 1.25rem;
+      margin:-.75rem -2rem 0;
+      scroll-padding-inline:2rem;
+      -webkit-overflow-scrolling:touch;
+      scrollbar-width:none;
+    }
+    .plan-grid::-webkit-scrollbar{display:none;}
+    .plan-grid > .plan{flex:0 0 38%;min-width:260px;max-width:340px;scroll-snap-align:center;}
+  }
+  @media(max-width:767px){
+    .plan-grid{padding:.75rem 2.25rem 1.25rem;margin:-.75rem -2.25rem 0;scroll-padding-inline:2.25rem;}
+    .plan-grid > .plan{flex:0 0 60%;}
+  }
+  @media(max-width:560px){
+    .plan-grid{padding:.75rem 2.5rem 1.25rem;margin:-.75rem -2.5rem 0;scroll-padding-inline:2.5rem;}
+    .plan-grid > .plan{flex:0 0 78%;min-width:240px;}
+  }
+  @media(max-width:380px){
+    .plan-grid{padding:.75rem 2rem 1.25rem;margin:-.75rem -2rem 0;scroll-padding-inline:2rem;}
+  }
+
+  /* Swipe affordance: fade edges + hint label */
+  .plan-grid-wrap{position:relative;}
+  @media(max-width:1023px){
+    .plan-grid-wrap{
+      mask-image:linear-gradient(90deg,transparent 0,#000 4%,#000 96%,transparent 100%);
+      -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 4%,#000 96%,transparent 100%);
+    }
+  }
+  .swipe-hint{display:none;}
+  @media(max-width:1023px){
+    .swipe-hint{
+      display:flex;align-items:center;justify-content:center;gap:8px;
+      margin:0 0 14px;
+      font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;
+      color:var(--ink-mute);
+    }
+    .swipe-hint .arrow{display:inline-flex;animation:swipeNudge 1.6s ease-in-out infinite;}
+  }
+  @keyframes swipeNudge{
+    0%,100%{transform:translateX(0);}
+    50%{transform:translateX(6px);}
+  }
+
+  /* Wave overlap helpers (lighter on mobile) */
+  .wave-overlap-hero{margin-top:-110px;}
+  .wave-overlap-mid{margin-top:-60px;}
+  @media(max-width:768px){
+    .wave-overlap-hero{margin-top:-50px;}
+    .wave-overlap-mid{margin-top:-30px;}
+  }
+
+  /* Mobile motion + layout tuning */
+  @media(max-width:768px){
+    /* Calmer reveal: shorter travel, faster duration, no stagger delays */
+    .reveal{transform:translate3d(0,16px,0);transition-duration:.6s;}
+    .reveal.d1,.reveal.d2,.reveal.d3,.reveal.d4,.reveal.d5,.reveal.d6{transition-delay:0s;}
+    /* Faster hero cascade so above-the-fold settles quickly on cell connections */
+    .hero-in{animation-duration:.7s;}
+    .hero-in.delay-2{animation-delay:.06s;}
+    .hero-in.delay-3{animation-delay:.12s;}
+    .hero-in.delay-4{animation-delay:.18s;}
+    .hero-in.delay-5{animation-delay:.26s;}
+    .hero-in.delay-6{animation-delay:.34s;}
+    /* Disable parallax on touch — it fights momentum scroll */
+    .parallax{transform:none!important;}
+    /* Less aggressive wave overlap on small screens (hero image is shorter) */
+    .wave-divider svg{height:48px;}
+  }
+
+  @media(max-width:480px){
+    /* Tighter hero spacing so trial CTA is closer to the fold */
+    #top{padding-top:88px;}
+    .h-display{font-size:clamp(34px,9vw,48px);line-height:1.08;}
+    /* App badges row: stack with consistent visual weight */
+    .app-badges img{height:48px!important;}
+  }
 </style>
 </head>
 <body class="bg-deep text-[var(--ink)]">
@@ -420,11 +541,11 @@
     </div>
 
     <div class="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
-      <a href="https://app.flowtongshu.com/register" class="pill btn-primary px-7 h-12 inline-flex items-center text-[15px] w-full sm:w-auto justify-center">
+      <a href="https://app.flowtongshu.com/register" class="pill btn-primary px-7 h-12 inline-flex items-center text-[15px] justify-center">
         Start your 3-day trial
         <svg width="14" height="14" viewBox="0 0 14 14" class="ml-2 flex-shrink-0"><path d="M3 7h8M8 3l4 4-4 4" stroke="#0B0D12" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
-      <a href="#features" class="pill btn-ghost px-7 h-12 inline-flex items-center text-[15px] w-full sm:w-auto justify-center font-medium">Watch a 60-second tour</a>
+      <a href="#features" class="pill btn-ghost px-7 h-12 inline-flex items-center text-[15px] justify-center font-medium">Watch a 60-second tour</a>
     </div>
 
     <!-- Hero screenshot -->
@@ -443,7 +564,7 @@
 </section>
 
 <!-- Wave: Hero → Testimonials -->
-<div class="wave-divider" style="background:transparent;position:relative;z-index:10;margin-top:-110px;">
+<div class="wave-divider wave-overlap-hero" style="background:transparent;position:relative;z-index:10;">
   <svg viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
     <path id="wave-path-0" fill="#0E1116" d="M0,40 C360,80 720,10 1080,40 C1260,55 1350,30 1440,45 L1440,80 L0,80 Z"/>
   </svg>
@@ -674,14 +795,6 @@
           <div class="tp-phone" id="tp-phone1">
             <div class="tp-screen">
               <div class="tp-notch"></div>
-              <div class="tp-status">
-                <span>9:41</span>
-                <span class="icons">
-                  <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.6"/><rect x="4.5" y="5" width="3" height="6" rx="0.6"/><rect x="9" y="3" width="3" height="8" rx="0.6"/><rect x="13.5" y="0" width="3" height="11" rx="0.6"/></svg>
-                  <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M7.5 0C4.6 0 1.9 1 0 2.7l1.5 1.5C3 2.8 5.2 2 7.5 2s4.5 0.8 6 2.2L15 2.7C13.1 1 10.4 0 7.5 0Zm0 4C5.6 4 3.9 4.7 2.6 5.8l1.5 1.5c0.9-0.8 2.1-1.3 3.4-1.3s2.5 0.5 3.4 1.3l1.5-1.5C11.1 4.7 9.4 4 7.5 4Zm0 4c-1 0-1.8 0.4-2.5 1l2.5 2 2.5-2c-0.7-0.6-1.5-1-2.5-1Z"/></svg>
-                  <svg width="25" height="11" viewBox="0 0 25 11" fill="none"><rect x="0.5" y="0.5" width="21" height="10" rx="2.5" stroke="currentColor" stroke-opacity="0.4"/><rect x="2" y="2" width="18" height="7" rx="1.2" fill="currentColor"/><rect x="22.5" y="3.5" width="1.6" height="4" rx="0.6" fill="currentColor" fill-opacity="0.5"/></svg>
-                </span>
-              </div>
               <img src="assets/img/new savedate.png" alt="Save this date"/>
               <div class="tp-home"></div>
             </div>
@@ -690,14 +803,6 @@
           <div class="tp-phone" id="tp-phone2">
             <div class="tp-screen">
               <div class="tp-notch"></div>
-              <div class="tp-status">
-                <span>9:41</span>
-                <span class="icons">
-                  <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.6"/><rect x="4.5" y="5" width="3" height="6" rx="0.6"/><rect x="9" y="3" width="3" height="8" rx="0.6"/><rect x="13.5" y="0" width="3" height="11" rx="0.6"/></svg>
-                  <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor"><path d="M7.5 0C4.6 0 1.9 1 0 2.7l1.5 1.5C3 2.8 5.2 2 7.5 2s4.5 0.8 6 2.2L15 2.7C13.1 1 10.4 0 7.5 0Zm0 4C5.6 4 3.9 4.7 2.6 5.8l1.5 1.5c0.9-0.8 2.1-1.3 3.4-1.3s2.5 0.5 3.4 1.3l1.5-1.5C11.1 4.7 9.4 4 7.5 4Zm0 4c-1 0-1.8 0.4-2.5 1l2.5 2 2.5-2c-0.7-0.6-1.5-1-2.5-1Z"/></svg>
-                  <svg width="25" height="11" viewBox="0 0 25 11" fill="none"><rect x="0.5" y="0.5" width="21" height="10" rx="2.5" stroke="currentColor" stroke-opacity="0.4"/><rect x="2" y="2" width="18" height="7" rx="1.2" fill="currentColor"/><rect x="22.5" y="3.5" width="1.6" height="4" rx="0.6" fill="currentColor" fill-opacity="0.5"/></svg>
-                </span>
-              </div>
               <img src="assets/img/new schedule.png" alt="Add new schedule"/>
               <div class="tp-home"></div>
             </div>
@@ -777,7 +882,7 @@
 </section>
 
 <!-- Wave: How → Pricing -->
-<div class="wave-divider" style="background:transparent;position:relative;z-index:5;margin-top:-60px;">
+<div class="wave-divider wave-overlap-mid" style="background:transparent;position:relative;z-index:5;">
   <svg viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
     <path id="wave-path-3" fill="#13161D" d="M0,45 C300,15 720,70 1080,40 C1260,25 1350,55 1440,40 L1440,80 L0,80 Z"/>
   </svg>
@@ -803,7 +908,15 @@
       <span id="lab-yearly" class="text-[14px] ink-dim font-medium">Yearly <span class="text-blue text-[12px] font-bold ml-1">−20%</span></span>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+    <div class="swipe-hint">
+      <span>Swipe to see all plans</span>
+      <span class="arrow" aria-hidden="true">
+        <svg width="18" height="12" viewBox="0 0 18 12" fill="none"><path d="M1 6h15M11 1l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+    </div>
+
+    <div class="plan-grid-wrap">
+    <div class="plan-grid">
 
       <!-- Free -->
       <div class="plan p-6 flex flex-col">
@@ -923,6 +1036,7 @@
       </div>
 
     </div>
+    </div>
 
     <p class="text-center mt-10 ink-mute text-[13px]">All paid plans start with a 3-day free trial · No card required · Cancel anytime</p>
   </div>
@@ -991,11 +1105,11 @@
       <span class="trial-badge">✓ 3-day free trial · No credit card · Cancel anytime</span>
     </div>
     <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-      <a href="https://app.flowtongshu.com/register" class="pill btn-primary px-8 h-12 inline-flex items-center text-[15px] w-full sm:w-auto justify-center">
+      <a href="https://app.flowtongshu.com/register" class="pill btn-primary px-8 h-12 inline-flex items-center text-[15px] justify-center">
         Start free - Pick your day
         <svg width="14" height="14" viewBox="0 0 14 14" class="ml-2 flex-shrink-0"><path d="M3 7h8M8 3l4 4-4 4" stroke="#0B0D12" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
-      <a href="https://app.flowtongshu.com" class="pill btn-ghost px-8 h-12 inline-flex items-center text-[15px] w-full sm:w-auto justify-center font-medium">I already have an account</a>
+      <a href="https://app.flowtongshu.com" class="pill btn-ghost px-8 h-12 inline-flex items-center text-[15px] justify-center font-medium">I already have an account</a>
     </div>
   </div>
 </section>
@@ -1010,7 +1124,7 @@
     <h2 class="font-display text-white" style="font-size:clamp(24px,3.6vw,36px);line-height:1.1;letter-spacing:-0.02em;font-weight:700;">soon, one tap to open</h2>
     <p class="mt-4 ink-dim text-[15px] max-w-xl mx-auto leading-relaxed">The iPhone &amp; Android apps are in development now, ready by the end of 2026. Flow Tong Shu already works beautifully in any mobile browser, no download needed.</p>
 
-    <div class="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3 opacity-70">
+    <div class="app-badges mt-7 flex flex-col sm:flex-row items-center justify-center gap-3 opacity-70">
       <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=250x83" alt="Coming to the App Store" style="height:54px;width:auto;display:block;"/>
       <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Coming to Google Play" style="height:78px;width:auto;display:block;"/>
     </div>
