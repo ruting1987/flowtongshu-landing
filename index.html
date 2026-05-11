@@ -220,7 +220,7 @@
   .glint{position:absolute;inset:0;pointer-events:none;background:radial-gradient(50% 30% at 50% 0%,rgba(123,168,255,.18),transparent 70%);}
 
   /* Section dividers — animated waves, no stroke line */
-  .wave-divider{display:block;width:100%;line-height:0;font-size:0;}
+  .wave-divider{display:block;width:100%;line-height:0;font-size:0;pointer-events:none;}
   .wave-divider svg{display:block;width:100%;height:60px;}
   @media(min-width:768px){.wave-divider svg{height:80px;}}
 
@@ -238,6 +238,7 @@
     transform:translate(-50%,-50%);
     pointer-events:none;
   }
+  .luopan-wrap, .luopan-wrap *{pointer-events:none!important;}
   #luopan{ width:100%;height:100%;display:block;overflow:visible; }
   .ring  { transform-origin:500px 500px; transform-box:view-box; }
   .ring-cw  { animation: spin-cw  calc(var(--period,300s) / 1) linear infinite; }
@@ -525,7 +526,7 @@
     <svg id="luopan" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg"></svg>
   </div>
 
-  <div class="relative max-w-[1240px] mx-auto px-5 lg:px-10 text-center">
+  <div class="relative max-w-[1240px] mx-auto px-5 lg:px-10 text-center" style="z-index:20;">
     <div class="badge mx-auto mb-7 drift"><span class="dot"></span> The Chinese Almanac · 通書</div>
 
     <h1 class="font-display h-display gradient-text">
@@ -540,12 +541,12 @@
       <span class="trial-badge">✓ 3-day free trial · No card required</span>
     </div>
 
-    <div class="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3">
-      <a href="https://app.flowtongshu.com/register" class="pill btn-primary px-7 h-12 inline-flex items-center text-[15px] justify-center">
+    <div class="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3" style="position:relative;z-index:30;pointer-events:auto;">
+      <a href="https://app.flowtongshu.com/register" class="pill btn-primary px-7 h-12 inline-flex items-center text-[15px] justify-center" style="pointer-events:auto;">
         Start your 3-day trial
         <svg width="14" height="14" viewBox="0 0 14 14" class="ml-2 flex-shrink-0"><path d="M3 7h8M8 3l4 4-4 4" stroke="#0B0D12" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
-      <a href="#features" class="pill btn-ghost px-7 h-12 inline-flex items-center text-[15px] justify-center font-medium">Watch a 60-second tour</a>
+      <a href="#features" class="pill btn-ghost px-7 h-12 inline-flex items-center text-[15px] justify-center font-medium" style="pointer-events:auto;">Watch a 60-second tour</a>
     </div>
 
     <!-- Hero screenshot -->
