@@ -89,6 +89,8 @@
       "acceptedAnswer": { "@type": "Answer", "text": "Yes. Two clicks from your account, anytime. Paid access stays active until the end of the billing period." } },
     { "@type": "Question", "name": "Is my birth data private?",
       "acceptedAnswer": { "@type": "Answer", "text": "Always. Birth profiles are encrypted, never sold, never shared, never used for advertising." } },
+    { "@type": "Question", "name": "What's the difference between the plans?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Free gives you the daily reading and natal chart. Lite adds the monthly view, daily diary, hourly stars and saved dates. Pro unlocks the Date Selector and Calendar sync. Master extends your date range to ±5 years. Business gives you unlimited range and 40 natal profiles." } },
     { "@type": "Question", "name": "Does it work in any time zone?",
       "acceptedAnswer": { "@type": "Answer", "text": "Yes. Flow Tong Shu calculates pillars and day officers based on solar terms in your local time zone." } }
   ]
@@ -932,11 +934,9 @@
           <div class="text-[12px] ink-mute mt-1">Free forever</div>
         </div>
         <ul class="mt-6 space-y-3 text-[13px] ink-dim flex-1">
-          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> 3 daily readings / day</li>
-          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Daily View</li>
-          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> 1 Bazi profile</li>
-          <li class="flex gap-2.5 opacity-40"><span class="flex-shrink-0">·</span> Monthly View</li>
-          <li class="flex gap-2.5 opacity-40"><span class="flex-shrink-0">·</span> Date Selector</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Daily view + summary</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Natal chart)</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Today's reading</li>
         </ul>
         <a href="https://app.flowtongshu.com/register?plan=free" class="mt-7 pill btn-ghost w-full h-11 inline-flex items-center justify-center text-[13px] font-medium">Start free</a>
       </div>
@@ -956,10 +956,13 @@
           <div class="text-[11px] ink-mute mt-1 monthly-note">Billed monthly</div>
         </div>
         <ul class="mt-6 space-y-3 text-[13px] ink-dim flex-1">
-          <li class="flex gap-2.5"><span style="color:#4ADE80;" class="flex-shrink-0">✓</span> 20 daily readings / day</li>
-          <li class="flex gap-2.5"><span style="color:#4ADE80;" class="flex-shrink-0">✓</span> Monthly View</li>
-          <li class="flex gap-2.5"><span style="color:#4ADE80;" class="flex-shrink-0">✓</span> 2 Bazi profiles</li>
-          <li class="flex gap-2.5"><span style="color:#4ADE80;" class="flex-shrink-0">✓</span> Journal &amp; Schedule</li>
+          <li class="flex gap-2.5"><span style="color:#4ADE80;" class="flex-shrink-0">✓</span> 20 seeds / day</li>
+          <li class="flex gap-2.5"><span style="color:#4ADE80;" class="flex-shrink-0">✓</span> 2 natal profiles</li>
+          <li class="flex gap-2.5"><span style="color:#4ADE80;" class="flex-shrink-0">✓</span> ±1 month range</li>
+          <li class="flex gap-2.5"><span style="color:#4ADE80;" class="flex-shrink-0">✓</span> Monthly view + daily &amp; hourly stars</li>
+          <li class="flex gap-2.5"><span style="color:#4ADE80;" class="flex-shrink-0">✓</span> Daily diary + hour-by-hour planner</li>
+          <li class="flex gap-2.5"><span style="color:#4ADE80;" class="flex-shrink-0">✓</span> Personalised daily hexagram</li>
+          <li class="flex gap-2.5"><span style="color:#4ADE80;" class="flex-shrink-0">✓</span> Save dates</li>
         </ul>
         <a href="https://app.flowtongshu.com/register?plan=lite" class="mt-7 pill btn-ghost w-full h-11 inline-flex items-center justify-center text-[13px] font-medium">Try free 3 days</a>
       </div>
@@ -980,11 +983,13 @@
           <div class="text-[11px] ink-mute mt-1 monthly-note">Billed monthly</div>
         </div>
         <ul class="mt-6 space-y-3 text-[13px] ink-dim flex-1">
-          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> 50 daily readings / day</li>
-          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Date Selector</li>
-          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> 4 Bazi profiles</li>
-          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> ±6 month range</li>
-          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Calendar sync</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> 50 seeds / day</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> 4 natal profiles</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> ±3 month range</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Date Selector + Calendar sync</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Custom saved-date tags</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Multi-profile date matching</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Everything in Lite</li>
         </ul>
         <a href="https://app.flowtongshu.com/register?plan=pro" class="mt-7 pill btn-primary w-full h-11 inline-flex items-center justify-center text-[13px]">Try free 3 days</a>
       </div>
@@ -1004,10 +1009,11 @@
           <div class="text-[11px] ink-mute mt-1 monthly-note">Billed monthly</div>
         </div>
         <ul class="mt-6 space-y-3 text-[13px] ink-dim flex-1">
-          <li class="flex gap-2.5"><span style="color:#B69BFA;" class="flex-shrink-0">✓</span> 100 daily readings / day</li>
-          <li class="flex gap-2.5"><span style="color:#B69BFA;" class="flex-shrink-0">✓</span> 10 Bazi profiles</li>
-          <li class="flex gap-2.5"><span style="color:#B69BFA;" class="flex-shrink-0">✓</span> ±12 month range</li>
-          <li class="flex gap-2.5"><span style="color:#B69BFA;" class="flex-shrink-0">✓</span> Advanced annotations</li>
+          <li class="flex gap-2.5"><span style="color:#B69BFA;" class="flex-shrink-0">✓</span> 100 seeds / day</li>
+          <li class="flex gap-2.5"><span style="color:#B69BFA;" class="flex-shrink-0">✓</span> 10 natal profiles</li>
+          <li class="flex gap-2.5"><span style="color:#B69BFA;" class="flex-shrink-0">✓</span> ±5 year range</li>
+          <li class="flex gap-2.5"><span style="color:#B69BFA;" class="flex-shrink-0">✓</span> Personal guide <span class="ink-mute text-[11px]">(soon)</span></li>
+          <li class="flex gap-2.5"><span style="color:#B69BFA;" class="flex-shrink-0">✓</span> Everything in Pro</li>
         </ul>
         <a href="https://app.flowtongshu.com/register?plan=master" class="mt-7 pill btn-ghost w-full h-11 inline-flex items-center justify-center text-[13px] font-medium">Try free 3 days</a>
       </div>
@@ -1027,11 +1033,12 @@
           <div class="text-[11px] ink-mute mt-1 monthly-note">Billed monthly</div>
         </div>
         <ul class="mt-6 space-y-3 text-[13px] ink-dim flex-1">
-          <li class="flex gap-2.5"><span style="color:#F5C56B;" class="flex-shrink-0">✓</span> 200 daily readings / day</li>
-          <li class="flex gap-2.5"><span style="color:#F5C56B;" class="flex-shrink-0">✓</span> 40 Bazi profiles</li>
-          <li class="flex gap-2.5"><span style="color:#F5C56B;" class="flex-shrink-0">✓</span> Team workspace</li>
-          <li class="flex gap-2.5"><span style="color:#F5C56B;" class="flex-shrink-0">✓</span> Shared planning rituals</li>
+          <li class="flex gap-2.5"><span style="color:#F5C56B;" class="flex-shrink-0">✓</span> 200 seeds / day</li>
+          <li class="flex gap-2.5"><span style="color:#F5C56B;" class="flex-shrink-0">✓</span> 40 natal profiles</li>
+          <li class="flex gap-2.5"><span style="color:#F5C56B;" class="flex-shrink-0">✓</span> Unlimited date range</li>
+          <li class="flex gap-2.5"><span style="color:#F5C56B;" class="flex-shrink-0">✓</span> Personal guide <span class="ink-mute text-[11px]">(soon)</span></li>
           <li class="flex gap-2.5"><span style="color:#F5C56B;" class="flex-shrink-0">✓</span> Priority support</li>
+          <li class="flex gap-2.5"><span style="color:#F5C56B;" class="flex-shrink-0">✓</span> Everything in Master</li>
         </ul>
         <a href="https://app.flowtongshu.com/register?plan=business" class="mt-7 pill btn-ghost w-full h-11 inline-flex items-center justify-center text-[13px] font-medium">Try free 3 days</a>
       </div>
@@ -1083,7 +1090,7 @@
       </details>
       <details class="faq-item">
         <summary>what's the difference between the plans?</summary>
-        <div class="faq-body">Free gives you the daily reading. Lite adds the monthly view &amp; journal. Pro unlocks the date selector — the most-used feature for planning real events. Master extends your range to ±12 months. Business is for teams that plan together.</div>
+        <div class="faq-body"><strong class="text-white">Free</strong> is for trying it out — today's daily reading, daily summary &amp; a view-only natal chart, no signup commitment. <strong class="text-white">Lite ($9/mo)</strong> opens the full month: monthly view, daily diary, hour-by-hour planner, personalised daily hexagram, save dates, 2 natal profiles &amp; ±1 month of date lookups. <strong class="text-white">Pro ($19/mo)</strong> is where most people land — it unlocks the Date Selector, Calendar sync, custom saved-date tags &amp; multi-profile date matching, with 4 profiles &amp; ±3 month range. <strong class="text-white">Master ($39/mo)</strong> stretches your range to ±5 years &amp; gives you 10 profiles, plus access to Personal guide when it ships. <strong class="text-white">Business ($59/mo)</strong> is for planners, masters &amp; teams: unlimited date range, 40 profiles &amp; priority support.</div>
       </details>
       <details class="faq-item">
         <summary>does it work in any time zone?</summary>
@@ -1194,7 +1201,7 @@
     const tog = document.getElementById('billing-toggle');
     const labM = document.getElementById('lab-monthly');
     const labY = document.getElementById('lab-yearly');
-    let yearly = false;
+    let yearly = true;
     function apply(){
       tog.classList.toggle('on', yearly);
       tog.setAttribute('aria-checked', String(yearly));
