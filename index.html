@@ -54,9 +54,8 @@
   "inLanguage": "en",
   "offers": [
     { "@type": "Offer", "name": "Free",     "price": "0",  "priceCurrency": "USD" },
-    { "@type": "Offer", "name": "Lite",     "price": "9",  "priceCurrency": "USD" },
-    { "@type": "Offer", "name": "Pro",      "price": "19", "priceCurrency": "USD" },
-    { "@type": "Offer", "name": "Master",   "price": "39", "priceCurrency": "USD" },
+    { "@type": "Offer", "name": "Plus",     "price": "9",  "priceCurrency": "USD" },
+    { "@type": "Offer", "name": "Pro",      "price": "24", "priceCurrency": "USD" },
     { "@type": "Offer", "name": "Business", "price": "59", "priceCurrency": "USD" }
   ],
   "aggregateRating": {
@@ -84,13 +83,17 @@
     { "@type": "Question", "name": "Do I need to know Chinese astrology?",
       "acceptedAnswer": { "@type": "Answer", "text": "No. Every reading is in plain English. Tap any term — pillar, branch, day officer — for a one-line explanation." } },
     { "@type": "Question", "name": "How does the 3-day free trial work?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Pick any paid plan for full access for 3 days. No credit card required. If you don't continue, your account stays on the Free tier with the daily reading intact." } },
+      "acceptedAnswer": { "@type": "Answer", "text": "Pick any paid plan for full access for 3 days. Cancel anytime before day 3 to avoid charges. If you don't continue, your account stays on the Free tier with the daily reading intact." } },
     { "@type": "Question", "name": "Can I cancel anytime?",
       "acceptedAnswer": { "@type": "Answer", "text": "Yes. Two clicks from your account, anytime. Paid access stays active until the end of the billing period." } },
     { "@type": "Question", "name": "Is my birth data private?",
       "acceptedAnswer": { "@type": "Answer", "text": "Always. Birth profiles are encrypted, never sold, never shared, never used for advertising." } },
     { "@type": "Question", "name": "What's the difference between the plans?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Free gives you the daily reading and natal chart. Lite adds the monthly view, daily diary, hourly stars and saved dates. Pro unlocks the Date Selector and Calendar sync. Master extends your date range to ±5 years. Business gives you unlimited range and 40 natal profiles." } },
+      "acceptedAnswer": { "@type": "Answer", "text": "Free gives you the daily reading, 1 natal profile, and a ±7 day window. Plus ($9/mo) adds the Date Selector (30 queries/month), 3 profiles, a ±3 month window, the journal and custom tags. Pro ($24/mo) gives you unlimited Date Selector queries, 10 profiles, ±12 month range, calendar sync, and Bazi Deep Analysis. Business ($59/mo) covers up to 5 team seats, 40 client profiles, unlimited range, and a 200 query/day team pool." } },
+    { "@type": "Question", "name": "How is this different from ChatGPT or free almanac apps?",
+      "acceptedAnswer": { "@type": "Answer", "text": "ChatGPT and free apps don't run the actual Bazi math — they generate plausible-sounding text. Flow Tong Shu uses a classical engine built on solar terms, the 24-hour 时辰 system, and your real four-pillar chart. Every date is pre-computed against your pillars, so it doesn't miss a clash the way a human (or a guess) might." } },
+    { "@type": "Question", "name": "Is there an iPhone or Android app?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Native iOS and Android apps land in Q4 2026. Until then, the web app works on any phone browser — add it to your home screen and it opens like a native app." } },
     { "@type": "Question", "name": "Does it work in any time zone?",
       "acceptedAnswer": { "@type": "Answer", "text": "Yes. Flow Tong Shu calculates pillars and day officers based on solar terms in your local time zone." } }
   ]
@@ -250,12 +253,20 @@
 
   /* Plan cards */
   .plan{
-    border-radius:20px;border:1px solid var(--line);
+    border-radius:22px;border:1px solid var(--line);
     background:linear-gradient(180deg,rgba(26,29,36,.7),rgba(15,17,23,.7));
     transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;
   }
   .plan:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.18);box-shadow:0 30px 80px -30px rgba(0,0,0,.6);}
-  .plan-pop{border:1px solid rgba(123,168,255,.5);box-shadow:0 30px 80px -30px rgba(58,123,255,.4),0 0 0 1px rgba(123,168,255,.18) inset;}
+  .plan-pop{
+    border:1px solid rgba(16,185,129,.55);
+    background:linear-gradient(180deg,rgba(16,185,129,.10),rgba(15,17,23,.85));
+    box-shadow:0 40px 90px -30px rgba(16,185,129,.45),0 0 0 1px rgba(16,185,129,.28) inset;
+  }
+  @media(min-width:1024px){
+    .plan-pop{transform:scale(1.04);z-index:2;}
+    .plan-pop:hover{transform:scale(1.04) translateY(-3px);}
+  }
 
   /* Toggle */
   .toggle{width:52px;height:28px;border-radius:999px;background:rgba(255,255,255,.08);position:relative;cursor:pointer;border:1px solid var(--line-strong);transition:background .2s;}
@@ -393,8 +404,8 @@
     #features .frame,#features .tp-stage{margin-left:auto;margin-right:auto;}
   }
 
-  /* Plan grid: 5-up on desktop, swipeable carousel on tablet + mobile */
-  .plan-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1rem;}
+  /* Plan grid: 3-up consumer row on desktop, swipeable carousel on tablet + mobile */
+  .plan-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.25rem;align-items:stretch;}
   @media(max-width:1023px){
     .plan-grid{
       display:flex;
@@ -409,18 +420,34 @@
       scrollbar-width:none;
     }
     .plan-grid::-webkit-scrollbar{display:none;}
-    .plan-grid > .plan{flex:0 0 38%;min-width:260px;max-width:340px;scroll-snap-align:center;}
+    .plan-grid > .plan{flex:0 0 78%;min-width:260px;max-width:340px;scroll-snap-align:center;}
   }
   @media(max-width:767px){
     .plan-grid{padding:.75rem 2.25rem 1.25rem;margin:-.75rem -2.25rem 0;scroll-padding-inline:2.25rem;}
-    .plan-grid > .plan{flex:0 0 60%;}
+    .plan-grid > .plan{flex:0 0 78%;}
   }
   @media(max-width:560px){
     .plan-grid{padding:.75rem 2.5rem 1.25rem;margin:-.75rem -2.5rem 0;scroll-padding-inline:2.5rem;}
-    .plan-grid > .plan{flex:0 0 78%;min-width:240px;}
+    .plan-grid > .plan{flex:0 0 82%;min-width:240px;}
   }
   @media(max-width:380px){
     .plan-grid{padding:.75rem 2rem 1.25rem;margin:-.75rem -2rem 0;scroll-padding-inline:2rem;}
+  }
+
+  /* Business teams card: horizontal layout on desktop */
+  .plan-teams{
+    margin-top:2.25rem;
+    border-radius:22px;
+    border:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(245,158,11,.06),rgba(15,17,23,.7));
+    padding:1.5rem 1.25rem;
+  }
+  .plan-teams-inner{
+    display:grid;grid-template-columns:1fr; gap:1.25rem;align-items:center;
+  }
+  @media(min-width:768px){
+    .plan-teams{padding:2rem 2.5rem;}
+    .plan-teams-inner{grid-template-columns:1.1fr 2fr auto;gap:2.5rem;}
   }
 
   /* Swipe affordance: fade edges + hint label */
@@ -492,6 +519,7 @@
     <div class="hidden md:flex items-center gap-8 text-[14px]">
       <a href="#features" class="nav-link">Features</a>
       <a href="#how" class="nav-link">How it works</a>
+      <a href="#compare" class="nav-link">Compare</a>
       <a href="#pricing" class="nav-link">Pricing</a>
       <a href="#faq" class="nav-link">FAQ</a>
     </div>
@@ -509,6 +537,7 @@
     <div class="px-5 py-5 flex flex-col gap-1">
       <a href="#features" class="nav-link py-3 text-[15px] border-b border-[var(--line)]" onclick="closeMobileMenu()">Features</a>
       <a href="#how" class="nav-link py-3 text-[15px] border-b border-[var(--line)]" onclick="closeMobileMenu()">How it works</a>
+      <a href="#compare" class="nav-link py-3 text-[15px] border-b border-[var(--line)]" onclick="closeMobileMenu()">Compare</a>
       <a href="#pricing" class="nav-link py-3 text-[15px] border-b border-[var(--line)]" onclick="closeMobileMenu()">Pricing</a>
       <a href="#faq" class="nav-link py-3 text-[15px] border-b border-[var(--line)]" onclick="closeMobileMenu()">FAQ</a>
       <a href="https://app.flowtongshu.com" class="nav-link py-3 text-[15px]">Log In</a>
@@ -531,24 +560,32 @@
   <div class="relative max-w-[1240px] mx-auto px-5 lg:px-10 text-center" style="z-index:20;">
     <div class="badge mx-auto mb-7 drift"><span class="dot"></span> The Chinese Almanac · 通書</div>
 
-    <h1 class="font-display h-display gradient-text">
-      pick the right day,<br/>every time.
+    <h1 id="hero-h1" class="font-display h-display gradient-text">
+      Pick your auspicious date<br/>in 60 seconds.
     </h1>
 
-    <p class="mt-6 max-w-2xl mx-auto text-[16px] md:text-[18px] ink-dim leading-relaxed">
-      Weddings, launches, contracts, surgeries, big moves. For 2,500 years, the Tong Shu has been the system Chinese families use to time the decisions that shape their lives. Flow Tong Shu computes the same classical readings — instantly, in plain English, on your phone.
+    <p id="hero-sub" class="mt-6 max-w-2xl mx-auto text-[16px] md:text-[18px] ink-dim leading-relaxed">
+      Used by 80% of Chinese families for 2,500 years to time weddings, moves, and baby's birth dates. Flow Tong Shu computes the same classical Bazi readings — instantly, in plain English.
     </p>
 
-    <div class="mt-7 flex items-center justify-center">
-      <span class="trial-badge">✓ 3-day free trial · No card required</span>
+    <!-- Anti-AI trust line: differentiates from the wave of LLM-generated
+         "astrology" apps. Mirrors CHANI's "written by astrologers, not AI"
+         framing. -->
+    <div class="mt-5 inline-flex items-center gap-2 text-[13px] md:text-[14px] ink-dim">
+      <span style="color:#FFD37A;">✦</span>
+      <span><strong style="color:#fff;">Classical Tong Shu calculations</strong> — not AI guesses.</span>
     </div>
 
-    <div class="mt-7 flex flex-col sm:flex-row items-center justify-center gap-3" style="position:relative;z-index:30;pointer-events:auto;">
-      <a href="https://app.flowtongshu.com/register" class="pill btn-primary px-7 h-12 inline-flex items-center text-[15px] justify-center" style="pointer-events:auto;">
-        Start your 3-day trial
+    <div class="mt-6 flex items-center justify-center">
+      <span class="trial-badge">✓ 3-day free trial · Cancel anytime</span>
+    </div>
+
+    <div class="mt-7 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 max-w-md sm:max-w-none mx-auto" style="position:relative;z-index:30;pointer-events:auto;">
+      <a id="hero-cta" href="https://app.flowtongshu.com/register" class="pill btn-primary px-5 sm:px-7 h-12 inline-flex items-center text-[14px] sm:text-[15px] justify-center" style="pointer-events:auto;">
+        <span id="hero-cta-label">Pick your auspicious date — free</span>
         <svg width="14" height="14" viewBox="0 0 14 14" class="ml-2 flex-shrink-0"><path d="M3 7h8M8 3l4 4-4 4" stroke="#0B0D12" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
-      <a href="#features" class="pill btn-ghost px-7 h-12 inline-flex items-center text-[15px] justify-center font-medium" style="pointer-events:auto;">Watch a 60-second tour</a>
+      <a href="#how" class="pill btn-ghost px-5 sm:px-7 h-12 inline-flex items-center text-[14px] sm:text-[15px] justify-center font-medium" style="pointer-events:auto;">See how it works</a>
     </div>
 
     <!-- Hero screenshot -->
@@ -566,36 +603,130 @@
   </div>
 </section>
 
-<!-- Wave: Hero → Testimonials -->
+<!-- Hero intent variants: swap copy via ?intent= URL param.
+     Default (no param) keeps generic auspicious-date hook for SEO.
+     Ad campaigns deep-link with wedding / moving / baby. -->
+<script>
+(function(){
+  var variants = {
+    wedding: {
+      h1: 'Pick your wedding date<br/>in 60 seconds.',
+      cta: 'Pick your wedding date — free',
+      href: 'https://app.flowtongshu.com/register?intent=wedding'
+    },
+    moving: {
+      h1: 'Pick your move-in date<br/>in 60 seconds.',
+      cta: 'Pick your move date — free',
+      href: 'https://app.flowtongshu.com/register?intent=moving'
+    },
+    baby: {
+      h1: "Pick your baby's birth date<br/>in 60 seconds.",
+      cta: "Pick your baby's date — free",
+      href: 'https://app.flowtongshu.com/register?intent=baby'
+    }
+  };
+  try {
+    var intent = new URLSearchParams(window.location.search).get('intent');
+    var v = intent && variants[intent];
+    if (!v) return;
+    var h1 = document.getElementById('hero-h1');
+    var cta = document.getElementById('hero-cta');
+    var label = document.getElementById('hero-cta-label');
+    if (h1) h1.innerHTML = v.h1;
+    if (label) label.textContent = v.cta;
+    if (cta) cta.setAttribute('href', v.href);
+  } catch(e) {}
+})();
+</script>
+
+<!-- Wave: Hero → Villain -->
 <div class="wave-divider wave-overlap-hero" style="background:transparent;position:relative;z-index:10;">
   <svg viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
     <path id="wave-path-0" fill="#0E1116" d="M0,40 C360,80 720,10 1080,40 C1260,55 1350,30 1440,45 L1440,80 L0,80 Z"/>
   </svg>
 </div>
 
+<!-- ========== VILLAIN: How most people do it today (Jobs Act 2) ========== -->
+<section class="relative py-16 lg:py-24 overflow-hidden" style="background:#0E1116;">
+  <div class="absolute inset-0 stars opacity-15"></div>
+  <div class="blob" style="top:-100px;right:-150px;width:420px;height:420px;background:radial-gradient(closest-side,rgba(255,107,107,.12),transparent 70%);"></div>
+
+  <div class="relative max-w-[1100px] mx-auto px-5 lg:px-10 text-center">
+    <div class="inline-flex items-center gap-2 mb-6 px-3 h-7 rounded-full text-[11px] uppercase tracking-[.16em] font-bold" style="background:rgba(255,107,107,.08);color:#FF9B9B;border:1px solid rgba(255,107,107,.22);">
+      <span style="width:6px;height:6px;border-radius:50%;background:#FF6B6B;box-shadow:0 0 8px #FF6B6B;"></span> The problem
+    </div>
+    <h2 class="font-display h-section gradient-text">how most people pick a date today</h2>
+    <p class="mt-5 ink-dim text-[16px] max-w-xl mx-auto leading-relaxed">For 2,500 years, this was a real skill. Today, most people do one of three things — and all three quietly fail.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-12 max-w-4xl mx-auto">
+      <!-- Card 1: Master -->
+      <div class="rounded-[18px] p-6 text-left" style="border:1px solid var(--line);background:rgba(26,29,36,.4);">
+        <div class="flex items-baseline gap-2 mb-3">
+          <span class="font-display text-white text-[18px]">$200</span>
+          <span class="ink-mute text-[12px]">· 2 weeks</span>
+        </div>
+        <h3 class="font-display text-white text-[16px] mb-2" style="letter-spacing:-0.005em;">pay a fengshui master</h3>
+        <p class="ink-dim text-[13px] leading-relaxed">1–2 week wait. You get 3 fixed dates. Need to change them? Pay again.</p>
+      </div>
+      <!-- Card 2: AI -->
+      <div class="rounded-[18px] p-6 text-left" style="border:1px solid var(--line);background:rgba(26,29,36,.4);">
+        <div class="flex items-baseline gap-2 mb-3">
+          <span class="font-display text-white text-[18px]">Free</span>
+          <span class="ink-mute text-[12px]">· 5 seconds</span>
+        </div>
+        <h3 class="font-display text-white text-[16px] mb-2" style="letter-spacing:-0.005em;">ask ChatGPT</h3>
+        <p class="ink-dim text-[13px] leading-relaxed">Confident, instant, completely made up. No Bazi engine. No clash check. No idea about your chart.</p>
+      </div>
+      <!-- Card 3: Guess -->
+      <div class="rounded-[18px] p-6 text-left" style="border:1px solid var(--line);background:rgba(26,29,36,.4);">
+        <div class="flex items-baseline gap-2 mb-3">
+          <span class="font-display text-white text-[18px]">Roll the dice</span>
+        </div>
+        <h3 class="font-display text-white text-[16px] mb-2" style="letter-spacing:-0.005em;">just guess</h3>
+        <p class="ink-dim text-[13px] leading-relaxed">"A Saturday that works for everyone." Might be the worst day of the year for your chart.</p>
+      </div>
+    </div>
+
+    <p class="mt-12 text-[22px] md:text-[26px] font-display text-white" style="letter-spacing:-0.015em;">There has to be a better way.</p>
+    <p class="mt-5 ink-dim text-[16px] lg:text-[17px] max-w-xl mx-auto leading-relaxed">So we built one. <strong style="color:#fff;">Flow Tong Shu</strong> — the 2,500-year-old almanac engine, in your pocket. Every day, every decision, not just the once-in-a-lifetime ones.</p>
+
+    <!-- Steve Jobs Bazi: real math, told as a story -->
+    <div class="mt-8 max-w-2xl mx-auto p-5 lg:p-6 rounded-[18px] text-left" style="border:1px solid rgba(245,197,107,.2);background:rgba(245,197,107,.04);">
+      <div class="text-[11px] uppercase tracking-[.18em] font-bold mb-3" style="color:var(--gold);">A strange little coincidence</div>
+      <p class="text-[14px] lg:text-[15px] text-white leading-relaxed">
+        On <strong>January 9, 2007 at 10 a.m.</strong>, Steve Jobs walked on stage and launched the iPhone. MacWorld set the date — nobody at Apple was consulting Chinese astrology.
+      </p>
+      <p class="mt-3 text-[14px] lg:text-[15px] text-white leading-relaxed">
+        We got curious and ran the math anyway. Jobs is a <strong>Fire</strong> person, born in the <strong>Tiger</strong> month, on a <strong>Dragon</strong> day. The iPhone launched on a <strong>Rabbit</strong> day.
+      </p>
+      <p class="mt-3 text-[14px] lg:text-[15px] text-white leading-relaxed">
+        <strong>Tiger, Rabbit, and Dragon</strong> are the three signs of spring — together they form a complete <strong>Wood</strong> structure, one of the strongest "good" patterns in classical Bazi. Wood feeds Fire. So the launch day inserts the missing middle piece into Jobs' chart, completing a Wood structure that fuels his Fire — on the very hour he stood up to speak.
+      </p>
+      <p class="mt-4 text-[13px] ink-dim leading-relaxed">
+        Almost certainly coincidence. Still — a beautiful one to find. Now imagine what's hiding in yours.
+      </p>
+    </div>
+  </div>
+</section>
+
 <!-- ========== TESTIMONIALS MARQUEE ========== -->
 <section class="relative py-12 lg:py-16 overflow-hidden bg-[#0E1116]">
   <div class="text-center max-w-xl mx-auto px-5 mb-10">
 
     <!-- Avatar stack + rating -->
-    <div class="flex items-center justify-center gap-5 mb-5 flex-wrap">
-      <div class="flex -space-x-3">
-        <div style="width:38px;height:38px;border-radius:50%;border:2px solid #0E1116;background:linear-gradient(135deg,#7BA8FF,#3A7BFF);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;z-index:5;">梅</div>
-        <div style="width:38px;height:38px;border-radius:50%;border:2px solid #0E1116;background:linear-gradient(135deg,#4ADE80,#16A34A);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;z-index:4;">陳</div>
-        <div style="width:38px;height:38px;border-radius:50%;border:2px solid #0E1116;background:linear-gradient(135deg,#F59E0B,#D97706);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;z-index:3;">S</div>
-        <div style="width:38px;height:38px;border-radius:50%;border:2px solid #0E1116;background:linear-gradient(135deg,#B69BFA,#7C3AED);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;z-index:2;">林</div>
-        <div style="width:38px;height:38px;border-radius:50%;border:2px solid #0E1116;background:linear-gradient(135deg,#F87171,#DC2626);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;z-index:1;">J</div>
+    <div class="flex items-center justify-center gap-4 sm:gap-5 mb-5 flex-wrap">
+      <div class="flex -space-x-3 flex-shrink-0">
+        <div style="width:36px;height:36px;border-radius:50%;border:2px solid #0E1116;background:linear-gradient(135deg,#7BA8FF,#3A7BFF);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;z-index:5;">梅</div>
+        <div style="width:36px;height:36px;border-radius:50%;border:2px solid #0E1116;background:linear-gradient(135deg,#4ADE80,#16A34A);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;z-index:4;">陳</div>
+        <div style="width:36px;height:36px;border-radius:50%;border:2px solid #0E1116;background:linear-gradient(135deg,#F59E0B,#D97706);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;z-index:3;">S</div>
+        <div style="width:36px;height:36px;border-radius:50%;border:2px solid #0E1116;background:linear-gradient(135deg,#B69BFA,#7C3AED);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;z-index:2;">林</div>
+        <div style="width:36px;height:36px;border-radius:50%;border:2px solid #0E1116;background:linear-gradient(135deg,#F87171,#DC2626);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;z-index:1;">J</div>
       </div>
-      <div style="width:1px;height:32px;background:rgba(255,255,255,0.1);"></div>
-      <div class="flex items-baseline gap-2">
-        <span style="color:var(--gold);font-size:22px;letter-spacing:3px;">★★★★★</span>
-        <span style="color:#fff;font-size:28px;font-weight:800;letter-spacing:-0.03em;">4.9</span>
-        <span class="ink-dim text-[13px]">/ 5</span>
-      </div>
-      <div style="width:1px;height:32px;background:rgba(255,255,255,0.1);"></div>
-      <div class="text-left">
-        <div style="color:#fff;font-size:16px;font-weight:700;">1,200+</div>
-        <div class="ink-dim text-[12px] uppercase tracking-widest">Reviews</div>
+      <div class="hidden sm:block" style="width:1px;height:32px;background:rgba(255,255,255,0.1);"></div>
+      <div class="flex items-baseline gap-2 flex-shrink-0">
+        <span style="color:var(--gold);font-size:18px;letter-spacing:2px;" class="sm:text-[22px]">★★★★★</span>
+        <span style="color:#fff;font-size:24px;font-weight:800;letter-spacing:-0.03em;" class="sm:text-[28px]">4.9</span>
+        <span class="ink-dim text-[12px] sm:text-[13px]">/ 5 · <strong style="color:#fff;font-weight:700;">1,200+</strong> reviews</span>
       </div>
     </div>
 
@@ -604,7 +735,14 @@
 
   <div class="marquee-track">
     <div class="marquee">
-      <!-- testimonials, doubled for seamless loop -->
+      <!-- testimonials, doubled for seamless loop. Wedding-planner
+           testimonial leads to align with the wedding-first hero. -->
+      <div class="testimonial">
+        <div class="stars-row">★★★★★</div>
+        <p class="text-[14px] leading-relaxed mb-4">"I plan around 80 weddings a year. Flow Tong Shu cut my date-research time in half — and clients love seeing the reasoning."</p>
+        <div class="text-[13px] font-semibold">Priya Rajaratnam</div>
+        <div class="text-[12px] ink-mute">Wedding planner · Kuala Lumpur</div>
+      </div>
       <div class="testimonial">
         <div class="stars-row">★★★★★</div>
         <p class="text-[14px] leading-relaxed mb-4">"Picked our restaurant opening date with this. Booked solid for the first month — coincidence? Maybe. I'll take it."</p>
@@ -616,12 +754,6 @@
         <p class="text-[14px] leading-relaxed mb-4">"My grandma used to call a master for every big decision. This app does what she did — without the awkward phone call."</p>
         <div class="text-[13px] font-semibold">Marcus Wong</div>
         <div class="text-[12px] ink-mute">Tech founder · Taipei</div>
-      </div>
-      <div class="testimonial">
-        <div class="stars-row">★★★★★</div>
-        <p class="text-[14px] leading-relaxed mb-4">"I plan around 80 weddings a year. Flow Tong Shu cut my date-research time in half — and clients love seeing the reasoning."</p>
-        <div class="text-[13px] font-semibold">Priya Rajaratnam</div>
-        <div class="text-[12px] ink-mute">Wedding planner · Kuala Lumpur</div>
       </div>
       <div class="testimonial">
         <div class="stars-row">★★★★★</div>
@@ -645,6 +777,12 @@
       <!-- duplicate set for seamless loop -->
       <div class="testimonial">
         <div class="stars-row">★★★★★</div>
+        <p class="text-[14px] leading-relaxed mb-4">"I plan around 80 weddings a year. Flow Tong Shu cut my date-research time in half — and clients love seeing the reasoning."</p>
+        <div class="text-[13px] font-semibold">Priya Rajaratnam</div>
+        <div class="text-[12px] ink-mute">Wedding planner · Kuala Lumpur</div>
+      </div>
+      <div class="testimonial">
+        <div class="stars-row">★★★★★</div>
         <p class="text-[14px] leading-relaxed mb-4">"Picked our restaurant opening date with this. Booked solid for the first month — coincidence? Maybe. I'll take it."</p>
         <div class="text-[13px] font-semibold">Sarah Chen</div>
         <div class="text-[12px] ink-mute">Restaurant owner · Singapore</div>
@@ -654,12 +792,6 @@
         <p class="text-[14px] leading-relaxed mb-4">"My grandma used to call a master for every big decision. This app does what she did — without the awkward phone call."</p>
         <div class="text-[13px] font-semibold">Marcus Wong</div>
         <div class="text-[12px] ink-mute">Tech founder · Taipei</div>
-      </div>
-      <div class="testimonial">
-        <div class="stars-row">★★★★★</div>
-        <p class="text-[14px] leading-relaxed mb-4">"I plan around 80 weddings a year. Flow Tong Shu cut my date-research time in half — and clients love seeing the reasoning."</p>
-        <div class="text-[13px] font-semibold">Priya Rajaratnam</div>
-        <div class="text-[12px] ink-mute">Wedding planner · Kuala Lumpur</div>
       </div>
       <div class="testimonial">
         <div class="stars-row">★★★★★</div>
@@ -697,15 +829,38 @@
 
     <div class="text-center max-w-2xl mx-auto mb-16">
       <div class="badge mb-6"><span class="dot"></span> What's inside</div>
-      <h2 class="font-display h-section gradient-text">four ways to read the day</h2>
+      <h2 class="font-display h-section gradient-text">five ways to read the day</h2>
       <p class="mt-5 ink-dim text-[16px] leading-relaxed">Each tool is rooted in classical Chinese metaphysics &amp; built for how you actually live now.</p>
     </div>
 
-    <!-- ROW 1 — Daily View -->
+    <!-- ROW 1 — Date Selector (hero feature) -->
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center mb-24 lg:mb-36">
+      <div class="lg:col-span-7">
+        <div class="frame frame-glow feat-img">
+          <img src="assets/img/date-selection.png" alt="Date Selector — ranked auspicious dates"/>
+        </div>
+      </div>
+      <div class="lg:col-span-5">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="inline-flex items-center px-2.5 h-6 rounded-full text-[10px] uppercase tracking-[.18em] font-bold whitespace-nowrap" style="background:linear-gradient(180deg,#34D399,#10B981);color:#0B0D12;">★ Most used</span>
+          <span class="text-[12px] uppercase tracking-[.22em] font-bold" style="color:#10B981;">01 · Date Selector · 擇日</span>
+        </div>
+        <h3 class="font-display h-feature">find your date in 60 seconds.</h3>
+        <p class="mt-5 ink-dim text-[15px] leading-relaxed max-w-md">Tell the almanac what you're planning — a wedding, a move, a launch, a baby's birth date — and it surfaces the days that favour exactly that, ranked. Days that clash with your personal pillars are excluded automatically, so every result already fits your chart.</p>
+        <ul class="mt-7 space-y-4 text-[14px]">
+          <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#10B981;"></span><span class="ink-dim">12 Day Officers (Open, Establish, Close, Receive, &amp; the rest) ranked &amp; scored</span></li>
+          <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#10B981;"></span><span class="ink-dim">personalised to your Bazi — clashing dates removed before you see them</span></li>
+          <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style="background:#10B981;"></span><span class="ink-dim">search up to ±12 months ahead &amp; plan a full year of milestones in one sitting</span></li>
+        </ul>
+        <a href="https://app.flowtongshu.com/register" class="mt-8 inline-flex items-center gap-2 ulink text-[14px] font-medium">Find your date <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+
+    <!-- ROW 2 — Daily View -->
     <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center mb-24 lg:mb-36">
       <div class="lg:col-span-5 order-2 lg:order-1">
-        <div class="text-[12px] uppercase tracking-[.22em] text-blue mb-4 font-bold">01 · Daily View</div>
-        <h3 class="font-display h-feature">wake up &amp; know today's energy</h3>
+        <div class="text-[12px] uppercase tracking-[.22em] text-blue mb-4 font-bold">02 · Daily View</div>
+        <h3 class="font-display h-feature">wake up &amp; know today's energy.</h3>
         <p class="mt-5 ink-dim text-[15px] leading-relaxed max-w-md">No generic horoscopes. No vague advice. Flow Tong Shu delivers the actual classical reading for today — pillar, element, what to pursue, what to defer — written in plain English you can act on before your first coffee gets cold.</p>
         <ul class="mt-7 space-y-4 text-[14px]">
           <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--blue)] flex-shrink-0"></span><span class="ink-dim">today's heavenly stem, earthly branch, &amp; the hour you're in</span></li>
@@ -721,7 +876,7 @@
       </div>
     </div>
 
-    <!-- ROW 2 — Monthly View -->
+    <!-- ROW 3 — Monthly View -->
     <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center mb-24 lg:mb-36">
       <div class="lg:col-span-7">
         <div class="frame frame-glow feat-img">
@@ -729,8 +884,8 @@
         </div>
       </div>
       <div class="lg:col-span-5">
-        <div class="text-[12px] uppercase tracking-[.22em] text-blue mb-4 font-bold">02 · Monthly View</div>
-        <h3 class="font-display h-feature">see the whole month before you commit</h3>
+        <div class="text-[12px] uppercase tracking-[.22em] text-blue mb-4 font-bold">03 · Monthly View</div>
+        <h3 class="font-display h-feature">see the whole month before you commit.</h3>
         <p class="mt-5 ink-dim text-[15px] leading-relaxed max-w-md">A lunar-aware calendar that maps exactly which days favour which actions. Solar &amp; lunar dates sit side by side, including all 24 solar terms. The 12 Day Officers are visible at a glance, so windows for travel, signing, opening, &amp; moving are impossible to miss.</p>
         <ul class="mt-7 space-y-4 text-[14px]">
           <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--blue)] flex-shrink-0"></span><span class="ink-dim">solar &amp; lunar dates displayed together with 24 solar terms</span></li>
@@ -740,11 +895,11 @@
       </div>
     </div>
 
-    <!-- ROW 3 — Natal Chart -->
+    <!-- ROW 4 — Natal Chart -->
     <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center mb-24 lg:mb-36">
       <div class="lg:col-span-5 order-2 lg:order-1">
-        <div class="text-[12px] uppercase tracking-[.22em] text-blue mb-4 font-bold">03 · Natal Chart · 八字</div>
-        <h3 class="font-display h-feature">your full bazi chart, decoded</h3>
+        <div class="text-[12px] uppercase tracking-[.22em] text-blue mb-4 font-bold">04 · Natal Chart · 八字</div>
+        <h3 class="font-display h-feature">your full bazi chart, decoded.</h3>
         <p class="mt-5 ink-dim text-[15px] leading-relaxed max-w-md">Hour, day, month, year. Your four pillars of birth, computed with hidden stems &amp; ten gods, plus luck pillars from age 9 to 99 and your current annual influence. The classical chart, beautifully rendered &amp; tappable — every element explained in plain language.</p>
         <ul class="mt-7 space-y-4 text-[14px]">
           <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--blue)] flex-shrink-0"></span><span class="ink-dim">heavenly stems &amp; earthly branches with hidden stems &amp; ten gods</span></li>
@@ -759,31 +914,11 @@
       </div>
     </div>
 
-    <!-- ROW 4 — Date Selector -->
-    <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center mb-24 lg:mb-36">
-      <div class="lg:col-span-7">
-        <div class="frame frame-glow feat-img">
-          <img src="assets/img/date-selection.png" alt="Date Selector — ranked auspicious dates"/>
-        </div>
-      </div>
-      <div class="lg:col-span-5">
-        <div class="text-[12px] uppercase tracking-[.22em] text-blue mb-4 font-bold">04 · Date Selector · 擇日</div>
-        <h3 class="font-display h-feature">find the right date in seconds</h3>
-        <p class="mt-5 ink-dim text-[15px] leading-relaxed max-w-md">Tell the almanac what you're planning — a wedding, a launch, a move, a contract — and it surfaces the days that favour exactly that, ranked. Days that clash with your personal pillars are excluded automatically, so every result already fits your chart.</p>
-        <ul class="mt-7 space-y-4 text-[14px]">
-          <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--blue)] flex-shrink-0"></span><span class="ink-dim">12 Day Officers (Open, Establish, Close, Receive, &amp; the rest) ranked &amp; scored</span></li>
-          <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--blue)] flex-shrink-0"></span><span class="ink-dim">personalized to your bazi — clashing dates removed before you see them</span></li>
-          <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--blue)] flex-shrink-0"></span><span class="ink-dim">search up to ±12 months ahead &amp; plan a full year of milestones in one sitting</span></li>
-        </ul>
-        <a href="https://app.flowtongshu.com/register" class="mt-8 inline-flex items-center gap-2 ulink text-[14px] font-medium">Find your date <span aria-hidden="true">→</span></a>
-      </div>
-    </div>
-
     <!-- ROW 5 — Schedule & Calendar Sync -->
     <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
       <div class="lg:col-span-5 order-2 lg:order-1">
         <div class="text-[12px] uppercase tracking-[.22em] text-blue mb-4 font-bold">05 · Schedule &amp; Sync</div>
-        <h3 class="font-display h-feature">claim the right hour &amp; sync it</h3>
+        <h3 class="font-display h-feature">claim the right hour &amp; sync it.</h3>
         <p class="mt-5 ink-dim text-[15px] leading-relaxed max-w-md">Finding the right day is half the work. The right hour seals it. Flow Tong Shu scores each window by heavenly stem, earthly branch, &amp; star quality, then pushes your event straight to Google or Apple Calendar in one tap. Name it, set your start &amp; end time, tag it as Auspicious, Personal Peak, or Day to Avoid, and it lands in your calendar with full almanac context attached.</p>
         <ul class="mt-7 space-y-4 text-[14px]">
           <li class="flex items-start gap-3"><span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-[var(--blue)] flex-shrink-0"></span><span class="ink-dim">hour-by-hour ratings scored by stem, branch, &amp; star quality</span></li>
@@ -847,7 +982,7 @@
         </div>
         <div class="step-tag">Step One</div>
         <h3 class="font-display text-[20px] mb-3 text-white" style="letter-spacing:-0.005em;">tell us when you were born</h3>
-        <p class="ink-dim leading-relaxed text-[14px]">Date, hour, place. Flow Tong Shu computes your four pillars &amp; 10-year luck cycle in the background. No card needed for the trial.</p>
+        <p class="ink-dim leading-relaxed text-[14px]">Date, hour, place. Flow Tong Shu computes your four pillars &amp; 10-year luck cycle in the background. 3-day free trial — cancel anytime.</p>
       </div>
 
       <div class="step-card">
@@ -871,7 +1006,7 @@
         </div>
         <div class="step-tag">Step Three</div>
         <h3 class="font-display text-[20px] mb-3 text-white" style="letter-spacing:-0.005em;">plan with confidence</h3>
-        <p class="ink-dim leading-relaxed text-[14px]">Use the date selector for what matters — weddings, launches, contracts. Sync auspicious windows to your calendar in one tap.</p>
+        <p class="ink-dim leading-relaxed text-[14px]">Use the date selector for what matters — weddings, moves, baby's birth date, launches. Sync auspicious windows to your calendar in one tap.</p>
       </div>
     </div>
 
@@ -884,10 +1019,217 @@
   </div>
 </section>
 
-<!-- Wave: How → Pricing -->
+<!-- Wave: How → Comparison -->
 <div class="wave-divider wave-overlap-mid" style="background:transparent;position:relative;z-index:5;">
   <svg viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
-    <path id="wave-path-3" fill="#13161D" d="M0,45 C300,15 720,70 1080,40 C1260,25 1350,55 1440,40 L1440,80 L0,80 Z"/>
+    <path fill="#0E1116" d="M0,45 C300,15 720,70 1080,40 C1260,25 1350,55 1440,40 L1440,80 L0,80 Z"/>
+  </svg>
+</div>
+
+<!-- ========== COMPARISON ========== -->
+<section id="compare" class="relative py-20 lg:py-28 overflow-hidden" style="background:#0E1116;">
+  <div class="absolute inset-0 stars opacity-15"></div>
+  <div class="blob" style="top:60px;right:-200px;width:520px;height:520px;background:radial-gradient(closest-side,rgba(245,197,107,.18),transparent 70%);"></div>
+
+  <div class="relative max-w-[1180px] mx-auto px-5 lg:px-10">
+    <div class="text-center max-w-2xl mx-auto mb-12 lg:mb-14">
+      <div class="badge mb-6"><span class="dot"></span> Why Flow Tong Shu</div>
+      <h2 class="font-display h-section gradient-text">skip the appointment.<br/>skip the guesswork.</h2>
+      <p class="mt-5 ink-dim text-[16px] leading-relaxed">The accuracy of a Fengshui master — in the time it takes to send a text. Every day, not just once.</p>
+    </div>
+
+    <!-- Desktop / tablet table -->
+    <div class="hidden md:block">
+      <div style="border:1px solid var(--line);border-radius:22px;overflow:hidden;background:rgba(15,18,24,0.6);box-shadow:0 30px 80px -40px rgba(245,197,107,.18);">
+        <table class="w-full text-left" style="border-collapse:collapse;table-layout:fixed;">
+          <colgroup>
+            <col style="width:26%;"/>
+            <col style="width:30%;"/>
+            <col style="width:22%;"/>
+            <col style="width:22%;"/>
+          </colgroup>
+          <thead>
+            <tr>
+              <th class="py-6 px-5" style="background:rgba(255,255,255,0.02);">&nbsp;</th>
+              <th class="py-6 px-5 text-center" style="border-left:1px solid var(--line);background:linear-gradient(180deg,rgba(245,197,107,.14),rgba(245,197,107,.02));position:relative;">
+                <div style="position:absolute;top:10px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;">Recommended</div>
+                <div class="font-display text-white text-[17px] mt-3">Flow Tong Shu</div>
+                <div class="text-[12px] ink-mute mt-1">$9 / month · 3-day free trial</div>
+              </th>
+              <th class="py-6 px-5 text-center" style="border-left:1px solid var(--line);">
+                <div class="font-display text-white text-[15px]" style="opacity:.85;">Fengshui Master</div>
+                <div class="text-[12px] ink-mute mt-1">$50 – $500 / consult</div>
+              </th>
+              <th class="py-6 px-5 text-center" style="border-left:1px solid var(--line);">
+                <div class="font-display text-white text-[15px]" style="opacity:.85;">ChatGPT / Free Tools</div>
+                <div class="text-[12px] ink-mute mt-1">Free</div>
+              </th>
+            </tr>
+          </thead>
+          <tbody class="text-[14px]">
+
+            <!-- Group: COST & SPEED -->
+            <tr>
+              <td colspan="4" class="pt-7 pb-3 px-5" style="border-top:1px solid var(--line);">
+                <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;">Cost &amp; Speed</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="py-4 px-5 ink-dim font-medium">Time to an answer</td>
+              <td class="py-4 px-5 text-center" style="border-left:1px solid var(--line);background:rgba(245,197,107,.05);"><strong class="text-white text-[15px]">60 seconds</strong></td>
+              <td class="py-4 px-5 text-center ink-dim" style="border-left:1px solid var(--line);">1 – 2 weeks</td>
+              <td class="py-4 px-5 text-center ink-dim" style="border-left:1px solid var(--line);">~5 min</td>
+            </tr>
+            <tr style="border-top:1px solid var(--line);">
+              <td class="py-4 px-5 ink-dim font-medium">Total cost per year*</td>
+              <td class="py-4 px-5 text-center" style="border-left:1px solid var(--line);background:rgba(245,197,107,.05);"><strong class="text-white text-[15px]">~$108</strong></td>
+              <td class="py-4 px-5 text-center ink-dim" style="border-left:1px solid var(--line);">$200 – $2,000+</td>
+              <td class="py-4 px-5 text-center ink-dim" style="border-left:1px solid var(--line);">$0</td>
+            </tr>
+            <tr style="border-top:1px solid var(--line);">
+              <td class="py-4 px-5 ink-dim font-medium">Date options &amp; revisions</td>
+              <td class="py-4 px-5 text-center" style="border-left:1px solid var(--line);background:rgba(245,197,107,.05);"><span style="color:#10B981;font-size:16px;">✓</span> <strong class="text-white">Unlimited — swap any time</strong></td>
+              <td class="py-4 px-5 text-center ink-dim" style="border-left:1px solid var(--line);">A few fixed dates · pay again to revise</td>
+              <td class="py-4 px-5 text-center ink-dim" style="border-left:1px solid var(--line);">Whatever it makes up</td>
+            </tr>
+
+            <!-- Group: ACCURACY -->
+            <tr>
+              <td colspan="4" class="pt-7 pb-3 px-5" style="border-top:1px solid var(--line);">
+                <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;">How accurate is it</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="py-4 px-5 ink-dim font-medium">
+                Built from your real birth chart
+                <div class="text-[11px] ink-mute font-normal mt-0.5">Bazi · 4 Pillars</div>
+              </td>
+              <td class="py-4 px-5 text-center" style="border-left:1px solid var(--line);background:rgba(245,197,107,.05);"><span style="color:#10B981;font-size:16px;">✓</span> <strong class="text-white">Yes — full classical engine</strong></td>
+              <td class="py-4 px-5 text-center ink-dim" style="border-left:1px solid var(--line);"><span style="color:#10B981;font-size:16px;">✓</span> Depends on master</td>
+              <td class="py-4 px-5 text-center" style="border-left:1px solid var(--line);"><span style="color:#FF6B6B;font-size:16px;">✗</span> <span class="ink-dim">Hallucinated guesses</span></td>
+            </tr>
+            <tr style="border-top:1px solid var(--line);">
+              <td class="py-4 px-5 ink-dim font-medium">
+                Never misses a bad-luck day
+                <div class="text-[11px] ink-mute font-normal mt-0.5">engine-precise, no human error</div>
+              </td>
+              <td class="py-4 px-5 text-center" style="border-left:1px solid var(--line);background:rgba(245,197,107,.05);"><span style="color:#10B981;font-size:16px;">✓</span> <strong class="text-white">Pre-computed, zero misses</strong></td>
+              <td class="py-4 px-5 text-center ink-dim" style="border-left:1px solid var(--line);">Manual — can be missed</td>
+              <td class="py-4 px-5 text-center" style="border-left:1px solid var(--line);"><span style="color:#FF6B6B;font-size:16px;">✗</span> <span class="ink-dim">Doesn't check</span></td>
+            </tr>
+            <tr style="border-top:1px solid var(--line);">
+              <td class="py-4 px-5 ink-dim font-medium">Works for you + partner / family</td>
+              <td class="py-4 px-5 text-center" style="border-left:1px solid var(--line);background:rgba(245,197,107,.05);"><span style="color:#10B981;font-size:16px;">✓</span> <strong class="text-white">Up to 10 people</strong></td>
+              <td class="py-4 px-5 text-center ink-dim" style="border-left:1px solid var(--line);">$$ Extra per person</td>
+              <td class="py-4 px-5 text-center" style="border-left:1px solid var(--line);"><span style="color:#FF6B6B;font-size:16px;">✗</span> <span class="ink-dim">Not possible</span></td>
+            </tr>
+
+            <!-- Group: CONVENIENCE -->
+            <tr>
+              <td colspan="4" class="pt-7 pb-3 px-5" style="border-top:1px solid var(--line);">
+                <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:700;">Every-day use</div>
+              </td>
+            </tr>
+            <tr>
+              <td class="py-4 px-5 ink-dim font-medium">Today's reading, every morning</td>
+              <td class="py-4 px-5 text-center" style="border-left:1px solid var(--line);background:rgba(245,197,107,.05);"><span style="color:#10B981;font-size:16px;">✓</span> <strong class="text-white">Fresh, every day</strong></td>
+              <td class="py-4 px-5 text-center" style="border-left:1px solid var(--line);"><span style="color:#FF6B6B;font-size:16px;">✗</span> <span class="ink-dim">One reading per consult</span></td>
+              <td class="py-4 px-5 text-center" style="border-left:1px solid var(--line);"><span style="color:#FF6B6B;font-size:16px;">✗</span> <span class="ink-dim">Generic horoscope</span></td>
+            </tr>
+            <tr style="border-top:1px solid var(--line);">
+              <td class="py-4 px-5 ink-dim font-medium">Plain English explanations</td>
+              <td class="py-4 px-5 text-center" style="border-left:1px solid var(--line);background:rgba(245,197,107,.05);"><span style="color:#10B981;font-size:16px;">✓</span> <strong class="text-white">Every page</strong></td>
+              <td class="py-4 px-5 text-center ink-dim" style="border-left:1px solid var(--line);">Depends</td>
+              <td class="py-4 px-5 text-center ink-dim" style="border-left:1px solid var(--line);">Sometimes</td>
+            </tr>
+            <tr style="border-top:1px solid var(--line);">
+              <td class="py-4 px-5 ink-dim font-medium">One-tap calendar sync</td>
+              <td class="py-4 px-5 text-center" style="border-left:1px solid var(--line);background:rgba(245,197,107,.05);"><span style="color:#10B981;font-size:16px;">✓</span> <strong class="text-white">Apple &amp; Google</strong></td>
+              <td class="py-4 px-5 text-center" style="border-left:1px solid var(--line);"><span style="color:#FF6B6B;font-size:16px;">✗</span> <span class="ink-dim">Pen &amp; paper</span></td>
+              <td class="py-4 px-5 text-center" style="border-left:1px solid var(--line);"><span style="color:#FF6B6B;font-size:16px;">✗</span> <span class="ink-dim">No</span></td>
+            </tr>
+            <tr style="border-top:1px solid var(--line);">
+              <td class="py-4 px-5 ink-dim font-medium">Available 24/7</td>
+              <td class="py-4 px-5 text-center" style="border-left:1px solid var(--line);background:rgba(245,197,107,.05);"><span style="color:#10B981;font-size:16px;">✓</span> <strong class="text-white">On your phone</strong></td>
+              <td class="py-4 px-5 text-center ink-dim" style="border-left:1px solid var(--line);">By appointment</td>
+              <td class="py-4 px-5 text-center ink-dim" style="border-left:1px solid var(--line);"><span style="color:#10B981;font-size:16px;">✓</span> Yes</td>
+            </tr>
+
+            <!-- Honesty row: When to pick the alternative -->
+            <tr>
+              <td colspan="4" class="pt-7 pb-3 px-5" style="border-top:1px solid var(--line);">
+                <div style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-mute);font-weight:700;">When to pick this instead</div>
+              </td>
+            </tr>
+            <tr style="border-top:1px solid var(--line);">
+              <td class="py-5 px-5 ink-mute text-[13px]">The honest answer</td>
+              <td class="py-5 px-5 text-[13px]" style="border-left:1px solid var(--line);background:rgba(245,197,107,.05);"><span class="text-white">Day-to-day decisions &amp; planning across the year — without the cost or wait.</span></td>
+              <td class="py-5 px-5 ink-dim text-[13px]" style="border-left:1px solid var(--line);">Once-in-a-lifetime decisions where you want a human reading.</td>
+              <td class="py-5 px-5 ink-dim text-[13px]" style="border-left:1px solid var(--line);">You don't actually care about classical accuracy.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Inline CTA + footnote -->
+      <div class="mt-8 flex flex-col items-center gap-3">
+        <a href="https://app.flowtongshu.com/register" class="pill btn-primary px-7 h-12 inline-flex items-center text-[15px] font-medium">
+          Try Flow free for 3 days
+          <svg width="14" height="14" viewBox="0 0 14 14" class="ml-2 flex-shrink-0"><path d="M3 7h8M8 3l4 4-4 4" stroke="#0B0D12" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <p class="ink-mute text-[12px]">* Assumes 1 Fengshui consult per major decision · 2–4 / year is typical</p>
+      </div>
+    </div>
+
+    <!-- Mobile stacked cards -->
+    <div class="md:hidden space-y-4">
+      <div style="border:1px solid rgba(245,197,107,.4);border-radius:18px;background:linear-gradient(180deg,rgba(245,197,107,.10),rgba(245,197,107,.02));padding:22px;position:relative;">
+        <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);padding:3px 10px;border-radius:999px;background:var(--gold);color:#0B0D12;font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;">Recommended</div>
+        <div class="font-display text-white text-[18px] mb-1 mt-1">Flow Tong Shu</div>
+        <div class="text-[13px]" style="color:var(--gold);">$9 / month · 3-day free trial</div>
+        <ul class="mt-4 space-y-2.5 text-[14px] text-white">
+          <li><span style="color:#10B981;">✓</span> <strong>60 seconds</strong> to an answer</li>
+          <li><span style="color:#10B981;">✓</span> <strong>Unlimited dates</strong> — swap any time, free</li>
+          <li><span style="color:#10B981;">✓</span> A <strong>fresh reading every morning</strong>, not once per year</li>
+          <li><span style="color:#10B981;">✓</span> Built from your <strong>real birth chart</strong> <span class="ink-mute">(Bazi)</span></li>
+          <li><span style="color:#10B981;">✓</span> <strong>Never misses</strong> a bad-luck day <span class="ink-mute">(engine-precise, no human error)</span></li>
+          <li><span style="color:#10B981;">✓</span> Works for <strong>you + family</strong> (up to 10)</li>
+          <li><span style="color:#10B981;">✓</span> One-tap <strong>calendar sync</strong></li>
+        </ul>
+        <a href="https://app.flowtongshu.com/register" class="mt-5 pill btn-primary w-full h-11 inline-flex items-center justify-center text-[14px] font-medium">
+          Try free for 3 days
+        </a>
+      </div>
+
+      <div style="border:1px solid var(--line);border-radius:18px;background:rgba(26,29,36,.5);padding:20px;">
+        <div class="font-display text-white text-[16px]">Fengshui Master</div>
+        <div class="text-[12px] ink-mute mt-1">$50 – $500 per consult · 1–2 weeks</div>
+        <ul class="mt-3 space-y-2 text-[13px] ink-dim">
+          <li><span style="color:#10B981;">✓</span> Real expertise &amp; human nuance</li>
+          <li><span style="color:#FF6B6B;">✗</span> Only a few fixed dates · pay again to revise</li>
+          <li><span style="color:#FF6B6B;">✗</span> Too slow for everyday decisions</li>
+        </ul>
+        <div class="mt-3 pt-3 text-[12px] ink-mute" style="border-top:1px solid var(--line);"><strong class="text-white">Pick this for:</strong> once-in-a-lifetime decisions where you want a human reading.</div>
+      </div>
+
+      <div style="border:1px solid var(--line);border-radius:18px;background:rgba(26,29,36,.5);padding:20px;">
+        <div class="font-display text-white text-[16px]">ChatGPT / Free Tools</div>
+        <div class="text-[12px] ink-mute mt-1">Free · No real engine</div>
+        <ul class="mt-3 space-y-2 text-[13px] ink-dim">
+          <li><span style="color:#10B981;">✓</span> Instant &amp; free</li>
+          <li><span style="color:#FF6B6B;">✗</span> Hallucinated dates, no Bazi math</li>
+          <li><span style="color:#FF6B6B;">✗</span> No personalization or calendar sync</li>
+        </ul>
+        <div class="mt-3 pt-3 text-[12px] ink-mute" style="border-top:1px solid var(--line);"><strong class="text-white">Pick this for:</strong> if you don't actually care about classical accuracy.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Wave: Comparison → Pricing -->
+<div class="wave-divider" style="background:transparent;position:relative;z-index:5;">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="#13161D" d="M0,45 C300,15 720,70 1080,40 C1260,25 1350,55 1440,40 L1440,80 L0,80 Z"/>
   </svg>
 </div>
 
@@ -898,9 +1240,27 @@
 
     <div class="text-center max-w-2xl mx-auto mb-10">
       <div class="badge mb-6"><span class="dot"></span> Pricing</div>
-      <h2 class="font-display h-section gradient-text">plans that grow with your practice</h2>
-      <p class="mt-5 ink-dim text-[16px] leading-relaxed">Start free. Upgrade when you need more. Cancel any time, in two clicks.</p>
+      <h2 class="font-display h-section gradient-text">plans that grow with you</h2>
+      <p class="mt-5 ink-dim text-[16px] leading-relaxed">Start free. Upgrade when you need more. Cancel anytime, in two clicks.</p>
       <div class="mt-5 inline-flex items-center gap-2 trial-badge">✓ Every paid plan starts with a 3-day free trial</div>
+    </div>
+
+    <!-- Price anchor: the Jobs reveal — old way vs Flow way -->
+    <div class="max-w-3xl mx-auto mb-10 p-5 lg:p-6 rounded-[20px]" style="border:1px solid var(--line);background:rgba(26,29,36,.35);">
+      <div class="grid grid-cols-1 md:grid-cols-[1fr,auto,1fr] gap-4 md:gap-6 items-center">
+        <div class="text-center md:text-right">
+          <div class="text-[11px] ink-mute uppercase tracking-[.16em] mb-1.5 font-bold">The old way</div>
+          <div class="font-display text-white text-[16px] lg:text-[18px] leading-tight" style="letter-spacing:-0.01em;">2 weeks <span class="ink-dim">·</span> $200 <span class="ink-dim">·</span> 3 fixed dates</div>
+        </div>
+        <div class="flex items-center justify-center" style="color:#10B981;font-size:22px;line-height:1;">
+          <span class="md:hidden">↓</span>
+          <span class="hidden md:inline">→</span>
+        </div>
+        <div class="text-center md:text-left">
+          <div class="text-[11px] uppercase tracking-[.16em] mb-1.5 font-bold" style="color:#10B981;">The Flow way</div>
+          <div class="font-display text-white text-[16px] lg:text-[18px] leading-tight" style="letter-spacing:-0.01em;">60 seconds <span class="ink-dim">·</span> $9 / mo <span class="ink-dim">·</span> unlimited</div>
+        </div>
+      </div>
     </div>
 
     <div class="flex items-center justify-center gap-4 mb-12">
@@ -926,7 +1286,7 @@
         <div class="mb-3">
           <span class="text-[20px] uppercase tracking-[.15em] ink-mute font-bold">Free</span>
         </div>
-        <div class="mt-2 ink-dim text-[13px]">Begin your daily practice.</div>
+        <div class="mt-2 ink-dim text-[13px]">See today's reading.</div>
         <div class="mt-6">
           <div class="flex items-baseline gap-1">
             <span class="font-display text-[36px]">$0</span>
@@ -934,19 +1294,22 @@
           <div class="text-[12px] ink-mute mt-1">Free forever</div>
         </div>
         <ul class="mt-6 space-y-3 text-[13px] ink-dim flex-1">
-          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Daily view + summary</li>
-          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Natal chart)</li>
-          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Today's reading</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Today's reading + hour pillar</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> 1 natal Bazi profile</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> ±7 days calendar range</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> 3 seeds* / day</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> 3 saved dates</li>
         </ul>
         <a href="https://app.flowtongshu.com/register?plan=free" class="mt-7 pill btn-ghost w-full h-11 inline-flex items-center justify-center text-[13px] font-medium">Start free</a>
       </div>
 
-      <!-- Lite -->
-      <div class="plan p-6 flex flex-col">
+      <!-- Plus (highlighted) -->
+      <div class="plan plan-pop p-6 flex flex-col relative">
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 h-6 inline-flex items-center pill text-[10px] uppercase tracking-[.18em] font-bold whitespace-nowrap" style="background:linear-gradient(180deg,#34D399,#10B981);color:#0B0D12;">Most Popular</div>
         <div class="mb-3">
-          <span class="text-[20px] uppercase tracking-[.15em] font-bold" style="color:#4ADE80;">Lite</span>
+          <span class="text-[20px] uppercase tracking-[.15em] font-bold" style="color:#10B981;">Plus</span>
         </div>
-        <div class="mt-2 ink-dim text-[13px]">For the regular practitioner.</div>
+        <div class="mt-2 ink-dim text-[13px]">Pick a good day.</div>
         <div class="mt-6">
           <div class="flex items-baseline gap-1">
             <span class="font-display text-[36px]">$<span class="price" data-m="9" data-y="7">9</span></span>
@@ -956,97 +1319,87 @@
           <div class="text-[11px] ink-mute mt-1 monthly-note">Billed monthly</div>
         </div>
         <ul class="mt-6 space-y-3 text-[13px] ink-dim flex-1">
-          <li class="flex gap-2.5"><span style="color:#4ADE80;" class="flex-shrink-0">✓</span> 20 seeds / day</li>
-          <li class="flex gap-2.5"><span style="color:#4ADE80;" class="flex-shrink-0">✓</span> 2 natal profiles</li>
-          <li class="flex gap-2.5"><span style="color:#4ADE80;" class="flex-shrink-0">✓</span> ±1 month range</li>
-          <li class="flex gap-2.5"><span style="color:#4ADE80;" class="flex-shrink-0">✓</span> Monthly view + daily &amp; hourly stars</li>
-          <li class="flex gap-2.5"><span style="color:#4ADE80;" class="flex-shrink-0">✓</span> Daily diary + hour-by-hour planner</li>
-          <li class="flex gap-2.5"><span style="color:#4ADE80;" class="flex-shrink-0">✓</span> Personalised daily hexagram</li>
-          <li class="flex gap-2.5"><span style="color:#4ADE80;" class="flex-shrink-0">✓</span> Save dates</li>
+          <li class="flex gap-2.5"><span class="flex-shrink-0">🎯</span> <strong style="color:#fff;">Date Selection · 30/mo</strong></li>
+          <li class="flex gap-2.5"><span style="color:#10B981;" class="flex-shrink-0">✓</span> 3 natal profiles</li>
+          <li class="flex gap-2.5"><span style="color:#10B981;" class="flex-shrink-0">✓</span> ±3 month calendar range</li>
+          <li class="flex gap-2.5"><span style="color:#10B981;" class="flex-shrink-0">✓</span> 25 seeds* / day</li>
+          <li class="flex gap-2.5"><span style="color:#10B981;" class="flex-shrink-0">✓</span> Full Qimen chart</li>
+          <li class="flex gap-2.5"><span style="color:#10B981;" class="flex-shrink-0">✓</span> Hour-by-hour planner + journal</li>
+          <li class="flex gap-2.5"><span style="color:#10B981;" class="flex-shrink-0">✓</span> Custom saved-date tags</li>
         </ul>
-        <a href="https://app.flowtongshu.com/register?plan=lite" class="mt-7 pill btn-ghost w-full h-11 inline-flex items-center justify-center text-[13px] font-medium">Try free 3 days</a>
+        <a href="https://app.flowtongshu.com/register?plan=plus" class="mt-7 pill w-full h-11 inline-flex items-center justify-center text-[13px] font-medium" style="background:linear-gradient(180deg,#34D399,#10B981);color:#0B0D12;border:1px solid rgba(16,185,129,.4);">Try free 3 days</a>
       </div>
 
-      <!-- Pro (highlighted) -->
-      <div class="plan plan-pop p-6 flex flex-col relative">
-        <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 h-6 inline-flex items-center pill text-[10px] uppercase tracking-[.18em] font-bold whitespace-nowrap" style="background:linear-gradient(180deg,#8AB6FF,#3A7BFF);color:#0B0D12;">Most Popular</div>
+      <!-- Pro -->
+      <div class="plan p-6 flex flex-col">
         <div class="mb-3">
           <span class="text-[20px] uppercase tracking-[.15em] font-bold" style="color:#7BA8FF;">Pro</span>
         </div>
-        <div class="mt-2 ink-dim text-[13px]">the full almanac, in motion.</div>
+        <div class="mt-2 ink-dim text-[13px]">Plan everything, for everyone.</div>
         <div class="mt-6">
           <div class="flex items-baseline gap-1">
-            <span class="font-display text-[36px]">$<span class="price" data-m="19" data-y="15">19</span></span>
+            <span class="font-display text-[36px]">$<span class="price" data-m="24" data-y="19">24</span></span>
             <span class="ink-mute text-[13px]">/ mo</span>
           </div>
-          <div class="text-[11px] ink-mute mt-1 yearly-note hidden">$180 billed yearly</div>
+          <div class="text-[11px] ink-mute mt-1 yearly-note hidden">$228 billed yearly</div>
           <div class="text-[11px] ink-mute mt-1 monthly-note">Billed monthly</div>
         </div>
         <ul class="mt-6 space-y-3 text-[13px] ink-dim flex-1">
-          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> 50 seeds / day</li>
-          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> 4 natal profiles</li>
-          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> ±3 month range</li>
-          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Date Selector + Calendar sync</li>
-          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Custom saved-date tags</li>
-          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Multi-profile date matching</li>
-          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Everything in Lite</li>
+          <li class="flex gap-2.5"><span class="flex-shrink-0">🎯</span> <strong style="color:#fff;">Date Selection · unlimited</strong></li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> 10 natal profiles</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> ±12 month calendar range</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> 60 seeds* / day</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Find days that work for everyone</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Calendar sync (Google + Apple)</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Deep Bazi diagnostic + Natal Qimen</li>
+          <li class="flex gap-2.5"><span class="text-blue flex-shrink-0">✓</span> Everything in Plus</li>
         </ul>
-        <a href="https://app.flowtongshu.com/register?plan=pro" class="mt-7 pill btn-primary w-full h-11 inline-flex items-center justify-center text-[13px]">Try free 3 days</a>
+        <a href="https://app.flowtongshu.com/register?plan=pro" class="mt-7 pill btn-ghost w-full h-11 inline-flex items-center justify-center text-[13px] font-medium">Try free 3 days</a>
       </div>
 
-      <!-- Master -->
-      <div class="plan p-6 flex flex-col">
-        <div class="mb-3">
-          <span class="text-[20px] uppercase tracking-[.15em] font-bold" style="color:#B69BFA;">Master</span>
-        </div>
-        <div class="mt-2 ink-dim text-[13px]">deep practice, wider horizon.</div>
-        <div class="mt-6">
-          <div class="flex items-baseline gap-1">
-            <span class="font-display text-[36px]">$<span class="price" data-m="39" data-y="31">39</span></span>
-            <span class="ink-mute text-[13px]">/ mo</span>
+    </div>
+    </div>
+
+    <!-- Business: horizontal teams card below the consumer 3-up -->
+    <div class="plan-teams">
+      <div class="plan-teams-inner">
+        <!-- Left: name + price -->
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-[18px] uppercase tracking-[.15em] font-bold" style="color:#F59E0B;">Business</span>
+            <span class="text-[10px] uppercase tracking-[.16em] font-bold px-2 py-0.5 rounded-full" style="background:rgba(245,158,11,.12);color:#F59E0B;border:1px solid rgba(245,158,11,.3);">For teams</span>
           </div>
-          <div class="text-[11px] ink-mute mt-1 yearly-note hidden">$372 billed yearly</div>
-          <div class="text-[11px] ink-mute mt-1 monthly-note">Billed monthly</div>
-        </div>
-        <ul class="mt-6 space-y-3 text-[13px] ink-dim flex-1">
-          <li class="flex gap-2.5"><span style="color:#B69BFA;" class="flex-shrink-0">✓</span> 100 seeds / day</li>
-          <li class="flex gap-2.5"><span style="color:#B69BFA;" class="flex-shrink-0">✓</span> 10 natal profiles</li>
-          <li class="flex gap-2.5"><span style="color:#B69BFA;" class="flex-shrink-0">✓</span> ±5 year range</li>
-          <li class="flex gap-2.5"><span style="color:#B69BFA;" class="flex-shrink-0">✓</span> Personal guide <span class="ink-mute text-[11px]">(soon)</span></li>
-          <li class="flex gap-2.5"><span style="color:#B69BFA;" class="flex-shrink-0">✓</span> Everything in Pro</li>
-        </ul>
-        <a href="https://app.flowtongshu.com/register?plan=master" class="mt-7 pill btn-ghost w-full h-11 inline-flex items-center justify-center text-[13px] font-medium">Try free 3 days</a>
-      </div>
-
-      <!-- Business -->
-      <div class="plan p-6 flex flex-col">
-        <div class="mb-3">
-          <span class="text-[20px] uppercase tracking-[.15em] font-bold" style="color:#F5C56B;">Business</span>
-        </div>
-        <div class="mt-2 ink-dim text-[13px]">for teams that plan together.</div>
-        <div class="mt-6">
+          <div class="ink-dim text-[13px] mb-4">Run your practice — 5 seats, shared client pool.</div>
           <div class="flex items-baseline gap-1">
             <span class="font-display text-[36px]">$<span class="price" data-m="59" data-y="47">59</span></span>
             <span class="ink-mute text-[13px]">/ mo</span>
           </div>
-          <div class="text-[11px] ink-mute mt-1 yearly-note hidden">$564 billed yearly</div>
-          <div class="text-[11px] ink-mute mt-1 monthly-note">Billed monthly</div>
+          <div class="text-[11px] ink-mute mt-1 yearly-note hidden">$564 billed yearly · 5 seats</div>
+          <div class="text-[11px] ink-mute mt-1 monthly-note">5 seats · $12 / extra seat</div>
         </div>
-        <ul class="mt-6 space-y-3 text-[13px] ink-dim flex-1">
-          <li class="flex gap-2.5"><span style="color:#F5C56B;" class="flex-shrink-0">✓</span> 200 seeds / day</li>
-          <li class="flex gap-2.5"><span style="color:#F5C56B;" class="flex-shrink-0">✓</span> 40 natal profiles</li>
-          <li class="flex gap-2.5"><span style="color:#F5C56B;" class="flex-shrink-0">✓</span> Unlimited date range</li>
-          <li class="flex gap-2.5"><span style="color:#F5C56B;" class="flex-shrink-0">✓</span> Personal guide <span class="ink-mute text-[11px]">(soon)</span></li>
-          <li class="flex gap-2.5"><span style="color:#F5C56B;" class="flex-shrink-0">✓</span> Priority support</li>
-          <li class="flex gap-2.5"><span style="color:#F5C56B;" class="flex-shrink-0">✓</span> Everything in Master</li>
+
+        <!-- Middle: features in two columns -->
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5 text-[13px] ink-dim">
+          <li class="flex gap-2.5 sm:col-span-2"><span class="flex-shrink-0">🎯</span> <strong style="color:#fff;">Date Selection · unlimited + no time limit</strong></li>
+          <li class="flex gap-2.5"><span style="color:#F59E0B;" class="flex-shrink-0">✓</span> 40 client profiles (shared pool)</li>
+          <li class="flex gap-2.5"><span style="color:#F59E0B;" class="flex-shrink-0">✓</span> Unlimited calendar range</li>
+          <li class="flex gap-2.5"><span style="color:#F59E0B;" class="flex-shrink-0">✓</span> 200 seeds* / day (team pool)</li>
+          <li class="flex gap-2.5"><span style="color:#F59E0B;" class="flex-shrink-0">✓</span> 5 user seats included</li>
+          <li class="flex gap-2.5"><span style="color:#F59E0B;" class="flex-shrink-0">✓</span> Centralized billing + admin</li>
+          <li class="flex gap-2.5"><span style="color:#F59E0B;" class="flex-shrink-0">✓</span> Priority support</li>
+          <li class="flex gap-2.5 sm:col-span-2"><span style="color:#F59E0B;" class="flex-shrink-0">✓</span> Everything in Pro, per seat</li>
         </ul>
-        <a href="https://app.flowtongshu.com/register?plan=business" class="mt-7 pill btn-ghost w-full h-11 inline-flex items-center justify-center text-[13px] font-medium">Try free 3 days</a>
+
+        <!-- Right: CTA -->
+        <div class="flex flex-col gap-3 items-stretch">
+          <a href="https://app.flowtongshu.com/register?plan=business" class="pill px-5 h-11 inline-flex items-center justify-center text-[13px] font-medium whitespace-nowrap" style="background:linear-gradient(180deg,#FCD34D,#F59E0B);color:#0B0D12;border:1px solid rgba(245,158,11,.4);">Try free 3 days</a>
+          <a href="mailto:hello@flowtongshu.com?subject=Business%20plan%20enquiry" class="pill btn-ghost px-5 h-11 inline-flex items-center justify-center text-[13px] font-medium whitespace-nowrap">Talk to us</a>
+        </div>
       </div>
-
-    </div>
     </div>
 
-    <p class="text-center mt-10 ink-mute text-[13px]">All paid plans start with a 3-day free trial · No card required · Cancel anytime</p>
+    <p class="text-center mt-10 ink-mute text-[13px]">All paid plans start with a 3-day free trial · Cancel anytime before day 3 to avoid charges</p>
+    <p class="text-center mt-2 ink-mute text-[12px]">* Seeds power your daily reading, Date Selection, AI chat &amp; in-app rewards · Refills daily</p>
   </div>
 </section>
 
@@ -1078,7 +1431,7 @@
       </details>
       <details class="faq-item">
         <summary>how does the 3-day free trial work?</summary>
-        <div class="faq-body">Pick any paid plan &amp; get full access for 3 days. No credit card required. If you don't continue, your account stays on the Free tier with the daily reading intact.</div>
+        <div class="faq-body">Pick any paid plan &amp; get full access for 3 days. Cancel anytime before day 3 to avoid charges. If you don't continue, your account stays on the Free tier with the daily reading intact.</div>
       </details>
       <details class="faq-item">
         <summary>can I cancel anytime?</summary>
@@ -1090,7 +1443,15 @@
       </details>
       <details class="faq-item">
         <summary>what's the difference between the plans?</summary>
-        <div class="faq-body"><strong class="text-white">Free</strong> is for trying it out — today's daily reading, daily summary &amp; a view-only natal chart, no signup commitment. <strong class="text-white">Lite ($9/mo)</strong> opens the full month: monthly view, daily diary, hour-by-hour planner, personalised daily hexagram, save dates, 2 natal profiles &amp; ±1 month of date lookups. <strong class="text-white">Pro ($19/mo)</strong> is where most people land — it unlocks the Date Selector, Calendar sync, custom saved-date tags &amp; multi-profile date matching, with 4 profiles &amp; ±3 month range. <strong class="text-white">Master ($39/mo)</strong> stretches your range to ±5 years &amp; gives you 10 profiles, plus access to Personal guide when it ships. <strong class="text-white">Business ($59/mo)</strong> is for planners, masters &amp; teams: unlimited date range, 40 profiles &amp; priority support.</div>
+        <div class="faq-body"><strong class="text-white">Free</strong> — today's daily reading, 1 natal profile, ±7 days navigation. No signup pressure. <strong class="text-white">Plus ($9/mo)</strong> — opens the <strong>Date Selector</strong> (30 picks per month), 3 profiles, ±3 months range, the daily journal &amp; custom tags. Right for couples planning a wedding or move. <strong class="text-white">Pro ($24/mo)</strong> — <strong>unlimited Date Selector</strong>, 10 profiles, ±12 months range, calendar sync, multi-stakeholder matching &amp; Bazi Deep Analysis. Where most practitioners land. <strong class="text-white">Business ($59/mo)</strong> — up to 5 team seats, 40 client profiles, unlimited range &amp; a 200/day shared query pool. For planners, masters &amp; agencies.</div>
+      </details>
+      <details class="faq-item">
+        <summary>how is this different from ChatGPT or free almanac apps?</summary>
+        <div class="faq-body">ChatGPT and free apps don't run the actual Bazi math — they generate plausible-sounding text. Flow Tong Shu uses a classical engine built on solar terms, the 24-hour 时辰 system, and your real four-pillar chart. Every date is pre-computed against your pillars, so it doesn't miss a clash the way a human (or a guess) might.</div>
+      </details>
+      <details class="faq-item">
+        <summary>is there an iPhone or Android app?</summary>
+        <div class="faq-body">Native iOS &amp; Android apps land in Q4 2026. Until then, the web app works beautifully on any phone browser — add it to your home screen and it opens like a native app. No download needed today.</div>
       </details>
       <details class="faq-item">
         <summary>does it work in any time zone?</summary>
@@ -1107,17 +1468,17 @@
 
   <div class="relative max-w-[820px] mx-auto px-5 text-center">
     <div class="badge mb-7"><span class="dot"></span> Begin · 起點</div>
-    <h2 class="font-display gradient-text" style="font-size:clamp(36px,6vw,72px);line-height:1.1;letter-spacing:-0.035em;font-weight:800;">the right day is<br/>already on the calendar.</h2>
-    <p class="mt-6 ink-dim text-[16px] max-w-xl mx-auto leading-relaxed">Open the almanac tomorrow morning. See what 2,500 years of accumulated rhythm has to say about your week.</p>
+    <h2 class="font-display gradient-text" style="font-size:clamp(36px,6vw,72px);line-height:1.1;letter-spacing:-0.035em;font-weight:800;">pick your day.<br/>in 60 seconds.</h2>
+    <p class="mt-6 ink-dim text-[16px] max-w-xl mx-auto leading-relaxed">Wedding. Move. Launch. Baby. Or just tomorrow morning's reading. The almanac runs the math — you make the call.</p>
     <div class="mt-6">
-      <span class="trial-badge">✓ 3-day free trial · No credit card · Cancel anytime</span>
+      <span class="trial-badge">✓ 3-day free trial · Cancel anytime before day 3 to avoid charges</span>
     </div>
-    <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-      <a href="https://app.flowtongshu.com/register" class="pill btn-primary px-8 h-12 inline-flex items-center text-[15px] justify-center">
-        Start free - Pick your day
+    <div class="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 max-w-md sm:max-w-none mx-auto">
+      <a href="https://app.flowtongshu.com/register" class="pill btn-primary px-5 sm:px-8 h-12 inline-flex items-center text-[14px] sm:text-[15px] justify-center">
+        Pick your auspicious date — free
         <svg width="14" height="14" viewBox="0 0 14 14" class="ml-2 flex-shrink-0"><path d="M3 7h8M8 3l4 4-4 4" stroke="#0B0D12" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
-      <a href="https://app.flowtongshu.com" class="pill btn-ghost px-8 h-12 inline-flex items-center text-[15px] justify-center font-medium">I already have an account</a>
+      <a href="https://app.flowtongshu.com" class="pill btn-ghost px-5 sm:px-8 h-12 inline-flex items-center text-[14px] sm:text-[15px] justify-center font-medium">I already have an account</a>
     </div>
   </div>
 </section>
@@ -1143,36 +1504,27 @@
 <!-- ========== FOOTER ========== -->
 <footer class="bg-deep border-t border-[var(--line)] py-14">
   <div class="max-w-[1240px] mx-auto px-5 lg:px-10">
-    <div class="grid grid-cols-2 md:grid-cols-5 gap-8 mb-10">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
       <div class="col-span-2">
         <a href="#top" class="inline-flex items-center mb-4">
           <img src="assets/img/logo_white.png" alt="Flow Tong Shu" class="h-8 w-auto"/>
         </a>
-        <p class="ink-dim text-[13px] max-w-xs leading-relaxed">The Chinese almanac, reimagined for the modern world. 2,500 years of wisdom - quietly woven into your day.</p>
+        <p class="ink-dim text-[13px] max-w-xs leading-relaxed">The Chinese almanac, reimagined for the modern world. 2,500 years of wisdom — quietly woven into your day.</p>
       </div>
       <div>
         <div class="text-[11px] uppercase tracking-[.22em] ink-mute mb-4 font-bold">Product</div>
         <ul class="space-y-3 text-[13px]">
           <li><a class="nav-link" href="#features">Features</a></li>
-          <li><a class="nav-link" href="#pricing">Pricing</a></li>
           <li><a class="nav-link" href="#how">How it works</a></li>
+          <li><a class="nav-link" href="#compare">Compare</a></li>
+          <li><a class="nav-link" href="#pricing">Pricing</a></li>
           <li><a class="nav-link" href="#faq">FAQ</a></li>
           <li><a class="nav-link" href="https://app.flowtongshu.com">Open the app</a></li>
         </ul>
       </div>
       <div>
-        <div class="text-[11px] uppercase tracking-[.22em] ink-mute mb-4 font-bold">Resources</div>
-        <ul class="space-y-3 text-[13px]">
-          <li><a class="nav-link" href="#">Glossary</a></li>
-          <li><a class="nav-link" href="#">The Tong Shu</a></li>
-          <li><a class="nav-link" href="#">Bazi primer</a></li>
-          <li><a class="nav-link" href="#">Solar terms</a></li>
-        </ul>
-      </div>
-      <div>
         <div class="text-[11px] uppercase tracking-[.22em] ink-mute mb-4 font-bold">Company</div>
         <ul class="space-y-3 text-[13px]">
-          <li><a class="nav-link" href="#">About</a></li>
           <li><a class="nav-link" href="mailto:hello@flowtongshu.com">Contact</a></li>
           <li><a class="nav-link" href="https://app.flowtongshu.com/privacy-policy">Privacy Policy</a></li>
           <li><a class="nav-link" href="https://app.flowtongshu.com/terms-of-service">Terms of Service</a></li>
@@ -1186,11 +1538,7 @@
         <a href="https://app.flowtongshu.com/privacy-policy" class="nav-link">Privacy Policy</a>
         <a href="https://app.flowtongshu.com/terms-of-service" class="nav-link">Terms of Service</a>
       </div>
-      <div class="flex items-center gap-5">
-        <a href="#" class="nav-link">Twitter</a>
-        <a href="#" class="nav-link">Instagram</a>
-        <a href="mailto:hello@flowtongshu.com" class="nav-link">hello@flowtongshu.com</a>
-      </div>
+      <a href="mailto:hello@flowtongshu.com" class="nav-link">hello@flowtongshu.com</a>
     </div>
   </div>
 </footer>
