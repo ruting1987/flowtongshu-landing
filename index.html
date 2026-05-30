@@ -1717,5 +1717,35 @@
   });
 })();
 </script>
+
+<!-- Tracking: Meta Pixel + Google Ads + TikTok Pixel + server-side CAPI fan-out -->
+<script src="assets/tracking.js"></script>
+<script>
+(function(){
+  if (!window.FTS) return;
+  // PageView
+  FTS.track('PageView');
+
+  // Lead — every trial CTA going to app.flowtongshu.com/register
+  document.querySelectorAll('a[href*="app.flowtongshu.com/register"]').forEach(function(a){
+    a.addEventListener('click', function(){
+      FTS.track('Lead', {
+        content_name: 'trial_cta',
+        content_category: 'signup',
+        cta_text: (a.textContent || '').trim().slice(0,60),
+        cta_location: a.id || (a.closest('section') && a.closest('section').id) || 'unknown'
+      });
+    }, { capture: true });
+  });
+
+  // Pricing toggle interaction → InitiateCheckout signal
+  var toggle = document.getElementById('billing-toggle');
+  if (toggle) {
+    toggle.addEventListener('click', function(){
+      FTS.track('ViewContent', { content_name: 'pricing_toggle' });
+    });
+  }
+})();
+</script>
 </body>
 </html>

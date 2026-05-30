@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>tracking · flowtongshu</title>
+<link rel="icon" type="image/png" href="assets/img/favicon-white.png"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B0D12; --panel:#13161D; --panel-2:#0F121A;
+    --ink:#F2F4F8; --ink-dim:#A6AFC2; --ink-mute:#6F7689;
+    --line:rgba(255,255,255,0.07); --line-strong:rgba(255,255,255,0.14);
+    --blue:#7BA8FF; --blue-2:#3A7BFF;
+    --green:#22C55E; --amber:#F5C56B; --red:#F87171;
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  html,body{
+    background:var(--bg);color:var(--ink);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    margin:0;padding:0;
+    -webkit-font-smoothing:antialiased;
+  }
+  .font-display{font-family:'Manrope',-apple-system,sans-serif;letter-spacing:-0.02em;font-weight:700;}
+  .font-mono{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;}
+
+  .glass{
+    background:rgba(26,29,36,0.55);
+    backdrop-filter:blur(20px) saturate(140%);
+    -webkit-backdrop-filter:blur(20px) saturate(140%);
+    border:1px solid var(--line);
+    border-radius:22px;
+  }
+
+  .stars{
+    position:fixed;inset:0;pointer-events:none;opacity:0.35;z-index:-1;
+    background:
+      radial-gradient(1px 1px at 12% 22%,rgba(255,255,255,.5) 50%,transparent 51%),
+      radial-gradient(1px 1px at 36% 8%,rgba(255,255,255,.35) 50%,transparent 51%),
+      radial-gradient(1.2px 1.2px at 78% 18%,rgba(255,255,255,.55) 50%,transparent 51%),
+      radial-gradient(1px 1px at 64% 42%,rgba(255,255,255,.3) 50%,transparent 51%),
+      radial-gradient(1px 1px at 88% 64%,rgba(255,255,255,.45) 50%,transparent 51%),
+      radial-gradient(1px 1px at 22% 72%,rgba(255,255,255,.32) 50%,transparent 51%);
+  }
+
+  .pill{border-radius:999px;}
+  .btn-primary{
+    background:linear-gradient(180deg,#8AB6FF 0%,#3A7BFF 100%);
+    color:#0B0D12;font-weight:600;
+    box-shadow:0 12px 32px -10px rgba(58,123,255,.45),inset 0 1px 0 rgba(255,255,255,.4);
+    transition:transform .15s ease,filter .15s ease;
+  }
+  .btn-primary:hover{transform:translateY(-1px);filter:brightness(1.05);}
+  .btn-ghost{
+    background:rgba(255,255,255,0.04);color:var(--ink);
+    border:1px solid var(--line-strong);
+    transition:background .15s,border-color .15s;
+  }
+  .btn-ghost:hover{background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,.22);}
+
+  .status-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;box-shadow:0 0 0 3px rgba(255,255,255,.04);}
+  .status-ok{background:var(--green);box-shadow:0 0 0 3px rgba(34,197,94,.18),0 0 12px rgba(34,197,94,.4);}
+  .status-warn{background:var(--amber);box-shadow:0 0 0 3px rgba(245,197,107,.18);}
+  .status-off{background:var(--ink-mute);}
+
+  .platform-card{padding:24px;}
+  .platform-icon{
+    width:44px;height:44px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:18px;
+    background:rgba(255,255,255,0.04);border:1px solid var(--line-strong);
+  }
+
+  .field-label{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-mute);font-weight:700;}
+  .field-val{
+    font-family:'JetBrains Mono',ui-monospace,monospace;
+    font-size:13px;
+    background:rgba(0,0,0,0.25);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:8px 12px;
+    color:var(--ink-dim);
+    word-break:break-all;
+  }
+  .field-val.empty{color:var(--ink-mute);font-style:italic;}
+
+  .console{
+    background:#06080C;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px;
+    font-family:'JetBrains Mono',ui-monospace,monospace;
+    font-size:12px;line-height:1.6;
+    color:var(--ink-dim);
+    max-height:340px;overflow:auto;
+  }
+  .console-line{padding:2px 0;border-bottom:1px solid rgba(255,255,255,.03);}
+  .console-line:last-child{border-bottom:0;}
+  .console-line .tag{color:var(--blue);font-weight:600;}
+  .console-line .ok{color:var(--green);}
+  .console-line .err{color:var(--red);}
+  .console-line .dim{color:var(--ink-mute);}
+</style>
+</head>
+<body>
+
+<div class="stars"></div>
+
+<header class="max-w-[1180px] mx-auto px-5 lg:px-8 pt-10 pb-6 flex items-center justify-between">
+  <a href="/" class="flex items-center gap-3">
+    <img src="assets/img/logo_white.png" alt="flowtongshu" class="h-7 w-auto"/>
+    <span class="text-[12px] uppercase tracking-[.22em] text-[color:var(--ink-mute)] font-bold">/ tracking</span>
+  </a>
+  <a href="/" class="text-[13px] text-[color:var(--ink-dim)] hover:text-white transition">← back to site</a>
+</header>
+
+<main class="max-w-[1180px] mx-auto px-5 lg:px-8 pb-24">
+
+  <div class="mb-10">
+    <h1 class="font-display text-[40px] lg:text-[56px] leading-[1.1] mb-3">tracking &amp; pixels</h1>
+    <p class="text-[15px] text-[color:var(--ink-dim)] max-w-2xl leading-relaxed">
+      meta pixel, google ads &amp; tiktok pixel — paired with their server-side conversions apis. one <span class="font-mono text-[13px] text-white">event_id</span> per event keeps browser + server signals deduped. all IDs are read live from <span class="font-mono text-[13px] text-white">/api/config</span>, which pulls from cloudflare environment variables — no redeploy needed when you change them.
+    </p>
+  </div>
+
+  <!-- Status grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-10" id="platforms"></div>
+
+  <!-- Test fire panel -->
+  <div class="glass platform-card mb-10">
+    <div class="flex items-center justify-between mb-5 flex-wrap gap-3">
+      <div>
+        <div class="text-[11px] uppercase tracking-[.22em] text-[color:var(--blue)] font-bold mb-1">section · test</div>
+        <h2 class="font-display text-[22px]">fire a test event</h2>
+        <p class="text-[13px] text-[color:var(--ink-dim)] mt-1">sends to all configured pixels + <span class="font-mono">/api/track</span> server-side fan-out. watch the console below.</p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <button class="pill btn-ghost px-4 h-9 text-[13px]" data-fire="PageView">PageView</button>
+        <button class="pill btn-ghost px-4 h-9 text-[13px]" data-fire="ViewContent">ViewContent</button>
+        <button class="pill btn-ghost px-4 h-9 text-[13px]" data-fire="InitiateCheckout">InitiateCheckout</button>
+        <button class="pill btn-primary px-4 h-9 text-[13px]" data-fire="Lead">Lead</button>
+        <button class="pill btn-primary px-4 h-9 text-[13px]" data-fire="CompleteRegistration">CompleteRegistration</button>
+      </div>
+    </div>
+    <div class="console" id="console">
+      <div class="console-line dim">// console output appears here when you fire a test event…</div>
+    </div>
+  </div>
+
+  <!-- Click ID snapshot -->
+  <div class="glass platform-card mb-10">
+    <div class="text-[11px] uppercase tracking-[.22em] text-[color:var(--ink-mute)] font-bold mb-3">section · attribution cookies</div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="click-ids"></div>
+  </div>
+
+  <!-- Setup help -->
+  <div class="glass platform-card">
+    <div class="text-[11px] uppercase tracking-[.22em] text-[color:var(--ink-mute)] font-bold mb-4">section · setup</div>
+    <h2 class="font-display text-[22px] mb-4">how to add or change IDs</h2>
+    <ol class="space-y-3 text-[14px] text-[color:var(--ink-dim)] leading-relaxed list-decimal pl-5">
+      <li>go to <span class="font-mono text-white">cloudflare dashboard → pages → flowtongshu-landing → settings → variables &amp; secrets</span></li>
+      <li>add or edit any of: <span class="font-mono text-white">META_PIXEL_ID</span>, <span class="font-mono text-white">META_CAPI_TOKEN</span>, <span class="font-mono text-white">GOOGLE_ADS_ID</span>, <span class="font-mono text-white">GOOGLE_ADS_LABEL</span>, <span class="font-mono text-white">TIKTOK_PIXEL_CODE</span>, <span class="font-mono text-white">TIKTOK_ACCESS_TOKEN</span> — mark as <strong>secret</strong></li>
+      <li>save — values propagate to the edge within ~30 seconds</li>
+      <li>hard refresh this page, fire a test event, watch the platform's events manager for arrival (usually under 30s)</li>
+    </ol>
+    <p class="mt-5 text-[13px] text-[color:var(--ink-dim)] leading-relaxed"><strong class="text-white">note:</strong> the cf <span class="font-mono">/api/config</span> response is edge-cached for 60s — if a change doesn't show, wait a minute or hard-refresh.</p>
+    <p class="mt-6 text-[12px] text-[color:var(--ink-mute)] leading-relaxed">attribution between this landing &amp; <span class="font-mono">app.flowtongshu.com</span> is handled by the <span class="font-mono">fts_clk</span> cookie + appending click ids to outbound cta urls. the app must read <span class="font-mono">fts_eid</span> from its query string and pass it as the <span class="font-mono">event_id</span> when firing the conversion event server-side. that closes the loop.</p>
+  </div>
+
+</main>
+
+<script src="assets/tracking.js"></script>
+<script>
+(function(){
+  var $ = function(sel){return document.querySelector(sel);};
+
+  // Fetch config first (same source as tracking.js — /api/config from CF env)
+  fetch('/api/config').then(function(r){return r.json();}).then(function(CFG){
+    renderPlatforms(CFG);
+    renderClickIds();
+  }).catch(function(){
+    renderPlatforms({});
+    renderClickIds();
+  });
+
+  function renderPlatforms(CFG){
+  // ── Status cards ─────────────────────────────────────────────────────
+  var platforms = [
+    {
+      key:'meta', label:'meta', icon:'M', color:'#1877F2',
+      browser: !!(CFG.meta && CFG.meta.pixelId),
+      server: '— check env vars in CF dashboard',
+      fields:[
+        {label:'pixel id', val: CFG.meta && CFG.meta.pixelId},
+        {label:'test event code', val: CFG.meta && CFG.meta.testEventCode}
+      ]
+    },
+    {
+      key:'google', label:'google ads', icon:'G', color:'#FBBC04',
+      browser: !!(CFG.google && CFG.google.adsId),
+      server: '— check env vars in CF dashboard',
+      fields:[
+        {label:'ads id', val: CFG.google && CFG.google.adsId},
+        {label:'conversion label', val: CFG.google && CFG.google.conversionLabel}
+      ]
+    },
+    {
+      key:'tiktok', label:'tiktok', icon:'T', color:'#FF0050',
+      browser: !!(CFG.tiktok && CFG.tiktok.pixelCode),
+      server: '— check env vars in CF dashboard',
+      fields:[
+        {label:'pixel code', val: CFG.tiktok && CFG.tiktok.pixelCode}
+      ]
+    }
+  ];
+
+  var grid = $('#platforms');
+  platforms.forEach(function(p){
+    var statusClass = p.browser ? 'status-ok' : 'status-off';
+    var statusText = p.browser ? 'browser pixel · live' : 'not configured';
+    var fields = p.fields.map(function(f){
+      var v = f.val || '';
+      return '<div><div class="field-label mb-2">'+f.label+'</div><div class="field-val'+(v?'':' empty')+'">'+(v?v:'— empty —')+'</div></div>';
+    }).join('');
+    var card = document.createElement('div');
+    card.className = 'glass platform-card';
+    card.innerHTML =
+      '<div class="flex items-center justify-between mb-5">'+
+        '<div class="flex items-center gap-3">'+
+          '<div class="platform-icon" style="color:'+p.color+';">'+p.icon+'</div>'+
+          '<div>'+
+            '<div class="font-display text-[18px]">'+p.label+'</div>'+
+            '<div class="text-[12px] text-[color:var(--ink-mute)] flex items-center gap-2 mt-0.5"><span class="status-dot '+statusClass+'"></span> '+statusText+'</div>'+
+          '</div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="space-y-4">'+fields+'</div>';
+    grid.appendChild(card);
+  });
+  } // end renderPlatforms
+
+  function renderClickIds(){
+  // ── Click ID snapshot ───────────────────────────────────────────────
+  var clkBox = $('#click-ids');
+  var clk = (window.FTS && FTS.clickIds) || {};
+  ['fbclid','gclid','ttclid','first_seen'].forEach(function(k){
+    var v = clk[k];
+    if (k === 'first_seen' && v) { try { v = new Date(v).toISOString(); } catch(_){} }
+    var div = document.createElement('div');
+    div.innerHTML = '<div class="field-label mb-2">'+k+'</div><div class="field-val'+(v?'':' empty')+'">'+(v?v:'— not captured —')+'</div>';
+    clkBox.appendChild(div);
+  });
+  } // end renderClickIds
+
+  // ── Console + test fire ─────────────────────────────────────────────
+  var cons = $('#console');
+  function log(line, cls){
+    var el = document.createElement('div');
+    el.className = 'console-line';
+    var t = new Date().toLocaleTimeString();
+    el.innerHTML = '<span class="dim">'+t+'</span> '+(cls?'<span class="'+cls+'">':'')+line+(cls?'</span>':'');
+    if (cons.firstChild && cons.firstChild.classList && cons.firstChild.classList.contains('dim') && cons.children.length === 1) {
+      cons.innerHTML = '';
+    }
+    cons.appendChild(el);
+    cons.scrollTop = cons.scrollHeight;
+  }
+
+  // Hook into FTS.track to mirror server response into console
+  var originalTrack = window.FTS && window.FTS.track;
+  if (originalTrack) {
+    window.FTS.track = function(name, params, user){
+      var eid = originalTrack(name, params, user);
+      log('<span class="tag">→ '+name+'</span> · event_id=<span class="ok">'+eid+'</span>', null);
+      // Probe /api/track response (separate from sendBeacon)
+      fetch('/api/track', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ event_name:name, event_id:eid, event_time:Math.floor(Date.now()/1000), url:location.href, params:params||{} })
+      }).then(function(r){
+        return r.json().then(function(j){ return {status:r.status, j:j}; });
+      }).then(function(o){
+        var cls = o.status < 300 ? 'ok' : 'err';
+        log('<span class="'+cls+'">'+o.status+'</span> /api/track → '+JSON.stringify(o.j), null);
+      }).catch(function(e){
+        log('<span class="err">fetch error</span> '+e.message, null);
+      });
+      return eid;
+    };
+  }
+
+  document.querySelectorAll('[data-fire]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var name = btn.getAttribute('data-fire');
+      window.FTS.track(name, { source:'tracking-page-test' });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
