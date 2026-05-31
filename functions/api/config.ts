@@ -1,35 +1,31 @@
-// Cloudflare Pages Function — returns PUBLIC tracking IDs to the browser.
-//
-// The CF dashboard's "Environment Variables" page is our single admin UI:
-// edit a value there, save, and the next page load picks it up. No
-// redeploy needed.
-//
-// Only public IDs are returned — secret tokens (META_CAPI_TOKEN,
-// TIKTOK_ACCESS_TOKEN) stay server-only and are used by /api/track.
+// Returns PUBLIC tracking IDs (no secrets) to the browser.
+// IDs are managed via the admin Tracking page in the app
+// (app.flowtongshu.com → Settings → Admin → Tracking). Changes propagate
+// within ~60s (worker-isolate cache TTL).
+
+import { loadTrackingConfig } from '../_tracking-config';
 
 interface Env {
-  META_PIXEL_ID?: string;
-  META_TEST_EVENT_CODE?: string;
-  GOOGLE_ADS_ID?: string;
-  GOOGLE_ADS_LABEL?: string;
-  TIKTOK_PIXEL_CODE?: string;
+  SUPABASE_URL?: string;
+  SUPABASE_SERVICE_ROLE_KEY?: string;
   APP_DOMAIN?: string;
 }
 
 interface Ctx { env: Env }
 
-export const onRequestGet = (ctx: Ctx): Response => {
+export const onRequestGet = async (ctx: Ctx): Promise<Response> => {
+  const cfg = await loadTrackingConfig(ctx.env);
   const body = {
     meta: {
-      pixelId: ctx.env.META_PIXEL_ID || '',
-      testEventCode: ctx.env.META_TEST_EVENT_CODE || '',
+      pixelId: cfg.meta_pixel_id || '',
+      testEventCode: cfg.meta_test_event_code || '',
     },
     google: {
-      adsId: ctx.env.GOOGLE_ADS_ID || '',
-      conversionLabel: ctx.env.GOOGLE_ADS_LABEL || '',
+      adsId: cfg.google_ads_id || '',
+      conversionLabel: cfg.google_ads_label || '',
     },
     tiktok: {
-      pixelCode: ctx.env.TIKTOK_PIXEL_CODE || '',
+      pixelCode: cfg.tiktok_pixel_code || '',
     },
     appDomain: ctx.env.APP_DOMAIN || 'app.flowtongshu.com',
     requireConsent: false,
@@ -37,9 +33,7 @@ export const onRequestGet = (ctx: Ctx): Response => {
   return new Response(JSON.stringify(body), {
     headers: {
       'Content-Type': 'application/json',
-      // Cache 60s at the edge — IDs change rarely, this keeps page loads fast.
       'Cache-Control': 'public, max-age=60, s-maxage=60',
-      // Allow the app subdomain to read this too (so we can centralize later)
       'Access-Control-Allow-Origin': '*',
     },
   });
