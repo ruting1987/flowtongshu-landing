@@ -16,5 +16,12 @@ export const onRequest = async (context: { request: Request; next: () => Promise
     return Response.redirect(target, 301);
   }
 
+  // The /tracking dashboard was removed. Permanently redirect any lingering
+  // requests (search engines, bookmarks, cached references) to the homepage
+  // so users don't see a stale cached copy of the old dashboard.
+  if (url.pathname === '/tracking' || url.pathname === '/tracking.html' || url.pathname === '/tracking/') {
+    return Response.redirect(`https://${CANONICAL_HOSTNAME}/`, 301);
+  }
+
   return context.next();
 };
