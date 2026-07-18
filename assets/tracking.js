@@ -141,7 +141,10 @@
 
     // Google — only for conversion events
     if (window.gtag && CFG.google && CFG.google.adsId && CFG.google.conversionLabel) {
-      var conversionEvents = { Lead: true, CompleteRegistration: true, Purchase: true, StartTrial: true };
+      // Lead (CTA click) intentionally excluded — Google conversions must count
+      // real signups only (CompleteRegistration fires on app.flowtongshu.com).
+      // Lead still goes to Meta/TikTok above.
+      var conversionEvents = { CompleteRegistration: true, Purchase: true, StartTrial: true };
       if (conversionEvents[eventName]) {
         window.gtag('event', 'conversion', {
           send_to: CFG.google.adsId + '/' + CFG.google.conversionLabel,
