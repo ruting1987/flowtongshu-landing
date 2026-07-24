@@ -44,10 +44,24 @@
     var existing = {};
     try { existing = JSON.parse(getCookie(CLICK_COOKIE) || '{}'); } catch (_) {}
     var changed = false;
-    ['fbclid', 'gclid', 'ttclid'].forEach(function (k) {
+    ['fbclid', 'gclid', 'ttclid',
+     'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach(function (k) {
       var v = p.get(k);
       if (v && !existing[k]) { existing[k] = v; changed = true; }
     });
+    // First-touch landing URL + external referrer — recorded once, ever.
+    // The cookie rides .flowtongshu.com so the app reads it at signup and
+    // can answer "where did this user come from" even for organic visits.
+    if (!existing.landing_url) {
+      existing.landing_url = location.href;
+      changed = true;
+      try {
+        var refHost = document.referrer ? new URL(document.referrer).hostname : '';
+        if (refHost && refHost.indexOf('flowtongshu.com') === -1) {
+          existing.referrer = document.referrer;
+        }
+      } catch (_) {}
+    }
     if (!existing.first_seen) { existing.first_seen = Date.now(); changed = true; }
     if (changed) setCookie(CLICK_COOKIE, JSON.stringify(existing), 90);
     return existing;
